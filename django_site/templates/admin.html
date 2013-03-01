@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<head>
+  <link rel="stylesheet" href="https://dl.dropbox.com/u/80197158/cg_static/css/admin.css" type='text/css' />
+  <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js'></script>
+  <script type='text/javascript' src='https://dl.dropbox.com/u/80197158/cg_static/js/admin.js'></script>
+  <title>CashGround Admin</title>
+  <script type="text/javascript"> 
+   var ad_types = {{ad_types|safe}}
+</script>
+</head>
+<body>
+<div class="content">
+<h1>Active ads</h1>
+<table id="ads">
+<tr class="table_title"><th>Icon</th><th>Title</th><th>Value(cents)</th><th>Type</th><th>Published</th><th></th></tr>
+{% for ad in ads %}
+<tr id="{{ad.id}}">
+  <td><img src="{{ ad.icon }}" /></td>
+  <td><input type="text" value="{{ ad.title }}" /></td>
+  <td><input type="text" value="{{ ad.value }}" /></td>
+  <td>
+    <SELECT name="type">
+      {% for value, name in ad_types %}
+      <OPTION value="{{ value }}" {% if value == ad.type %}selected="selected"{% endif %}>
+        {{ name }}</OPTION>
+      {% endfor %}
+    </SELECT></td>
+  <td>{{ ad.timestamp }}</td>
+  <td><input type="button" class="delete" value="Delete"/></td>
+</tr>
+{% endfor %}
+</table>
+<button id="add_ad">Add ad</button>
+<button id="ads_save">Save</button>
+<button id="ads_reset">Undo Changes</button>
+<br /><br /><br />
+<h1>Users</h1>
+<table id="users">
+<tr class="table_title"><th>Name</th><th>Cash</th><th>Ads Viewed</th><th>Date Joined</th><th></th></tr>
+{% for user in users %}
+<tr id="{{user.id}}">
+  <td><input type="text" value="{{user.name}}" /></td>
+  <td>{{user.cash}}</td>
+  <td>{{user.ads_viewed}}</td>
+  <td>{{user.timestamp}}</td>
+  <td><input type="button" class="delete" value="Delete"/></td>
+</tr>
+{% endfor %}
+</table>
+<button id="add_user">Add user</button>
+<button id="user_save">Save</button>
+<button id="user_reset">Undo Changes</button>
+</div>
+<br />
+</body>

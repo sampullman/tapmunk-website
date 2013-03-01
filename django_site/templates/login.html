@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<head>
+  <link rel="stylesheet" href="https://dl.dropbox.com/u/80197158/cg_static/css/admin.css" type='text/css' />
+  <title>CashGround Login</title>
+</head>
+<body>
+  <div class="content">
+    <h1>Login</h1>
+    <form method="POST" action="/cashground/admin/">
+      {% csrf_token %}
+      <input type="hidden" name="service" value="web" />
+      Username: <input type="text" name="username" size="30" /><br />
+      Password: <input type="password" name="password" size="30" /><br />
+      <div align="center">
+        <p><input type="submit" value="Login" /></p>
+      </div>
+    </form>
+  </div>
+</body>
