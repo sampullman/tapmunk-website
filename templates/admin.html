@@ -15,7 +15,7 @@
 <tr class="table_title"><th>Icon</th><th>Title</th><th>Value(cents)</th><th>Type</th><th>Published</th><th></th></tr>
 {% for ad in ads %}
 <tr id="{{ad.id}}">
-  <td><img src="{{ ad.icon }}" /></td>
+  <td class="icon"><img src="{{ ad.icon }}" /></td>
   <td><input type="text" value="{{ ad.title }}" /></td>
   <td><input type="text" value="{{ ad.value }}" /></td>
   <td>
@@ -36,20 +36,43 @@
 <br /><br /><br />
 <h1>Users</h1>
 <table id="users">
-<tr class="table_title"><th>Name</th><th>Cash</th><th>Ads Viewed</th><th>Date Joined</th><th></th></tr>
-{% for user in users %}
-<tr id="{{user.id}}">
-  <td><input type="text" value="{{user.name}}" /></td>
-  <td>{{user.cash}}</td>
-  <td>{{user.ads_viewed}}</td>
-  <td>{{user.timestamp}}</td>
-  <td><input type="button" class="delete" value="Delete"/></td>
-</tr>
-{% endfor %}
+  <tr class="table_title"><th>Name</th><th>Cash</th><th>Ads Viewed</th><th>Date Joined</th><th></th></tr>
+  {% for user in users %}
+  <tr id="{{user.id}}">
+    <td><input type="text" value="{{user.name}}" /></td>
+    <td>{{user.cash}}</td>
+    <td>{{user.ads_viewed}}</td>
+    <td>{{user.timestamp}}</td>
+    <td><input type="button" class="delete" value="Delete"/></td>
+  </tr>
+  {% endfor %}
 </table>
 <button id="add_user">Add user</button>
 <button id="user_save">Save</button>
 <button id="user_reset">Undo Changes</button>
+<br /><br /><br />
+<h1>Consumables</h1>
+<table id="consumables">
+  <tr class="table_title"><th>Icon</th><th>Title</th><th>Cost</th><th>Type</th><th>Date Created</th><th></th></tr>
+  {% for cons in consumables %}
+  <tr id="{{cons.id}}">
+    <td class="icon"><img src="{{cons.iconURI}}" /></td>
+    <td><input type="text" value="{{cons.title}}" /></td>
+    <td><input type="text" value="{{cons.cost}}" /></td>
+    <td>
+      <SELECT name="type">
+        <OPTION value="Product" {% if "Product" == cons.type %}selected="selected"{% endif %}>Product</OPTION>
+        <OPTION value="Coupon" {% if "Coupon" == cons.type %}selected="selected"{% endif %}>Coupon</OPTION>
+      </SELECT>
+    </td>
+    <td>{{cons.timestamp}}</td>
+    <td><input type="button" class="delete" value="Delete"/></td>
+  </tr>
+  {% endfor %}
+</table>
+<button id="add_consumable">Add consumable</button>
+<button id="consumable_save">Save</button>
+<button id="consumable_reset">Undo Changes</button>
 </div>
 <br />
 </body>

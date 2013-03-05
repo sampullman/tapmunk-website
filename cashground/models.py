@@ -61,3 +61,22 @@ class ViewedAd(models.Model):
     user = models.ForeignKey(User)
     ad = models.OneToOneField(Ad)
     timestamp = models.DateTimeField('date published')
+
+ConsumableTypes = ['Product', 'Coupon']
+class Consumable(models.Model):
+    timestamp = models.DateTimeField('date published')
+    icon = models.URLField()
+    title = models.CharField(max_length=20)
+    cost = models.IntegerField()
+    item_type = models.CharField(max_length=14)
+
+    def getDict(self):
+        return { 'timestamp':str(self.timestamp), 'iconURI':self.icon, 'title':self.title,
+                 'cost':self.cost, 'type':self.item_type, 'id':self.id }
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.timestamp = timezone.now()
+        super(Consumable, self).save(*args, **kwargs)
+
+    

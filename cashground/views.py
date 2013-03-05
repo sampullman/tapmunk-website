@@ -36,7 +36,7 @@ def admin(request):
     if user is not None:
         if user.is_active:
             login(request, user)
-            c = { "ads":getAdsDict(), 'users':getUsersDict(), "ad_types":AD_TYPES }
+            c = { "ads":getAdsDict(), 'users':getUsersDict(), 'consumables':getConsumablesDict(), "ad_types":AD_TYPES }
             return crsf_render(request, 'admin.html', c)
         else:
             return HttpResponse('Error: User is inactive.')
@@ -88,6 +88,9 @@ def request(request):
                     return makeResponse({ 'error': 'User is inactive.' }, False, query)
             else:
                 return makeResponse({ 'error': 'Invalid username or password.' }, False, query)
+        elif query == 'requestUsers':
+            users = getUsersDict()
+            return makeResponse({'users': users }, name=query)            
         elif query == 'updateUser':
             user = User.objects.get(id=request['id'])
             user.username = request['username']
@@ -107,7 +110,32 @@ def request(request):
         elif query == 'deleteUser':
             id = request['id']
             User.objects.get(id=id).delete()
-            return makeResponse('', True, query)            
+            return makeResponse('', True, query)
+        elif query == 'createConsumable':
+            icon = request['iconURI']
+            title = request['title']
+            cost = request['cost']
+            item_type = request['type']
+            cons = Consumable(title=title, icon=icon, cost=cost, item_type=item_type)
+            cons.save()
+            return makeResponse({'id':cons.id, 'timestamp':str(cons.timestamp) }, True, query)
+        elif query == 'requestConsumables':
+            return makeResponse({'consumables':getConsumablesDict()}, name=query)
+        elif query == 'requestProducts':
+            return makeResponse({'products':getProductsDict()}, name=query);
+        elif query == 'requestCoupons':
+            return makeResponse({'coupons':getCouponsDict()}, name=query);
+        elif query == 'updateConsumable':
+            consumable = Consumable.objects.get(id=request['id'])
+            consumable.item_type = request['type']
+            consumable.title = request['title']
+            consumable.cost = request['cost']
+            consumable.icon = request['iconURI']
+            consumable.save()
+            return makeResponse('', True, query)
+        elif query == 'deleteConsumable':
+            consumable = Consumable.objects.get(id=request['id']).delete()
+            return makeResponse('', True, query)
     except Exception as e:
         error = e.message
         return makeResponse({ 'error': error }, False, query)
@@ -123,3 +151,21 @@ def getUsersDict():
     for user in UserProfile.objects.all():
         users.append(user.getDict())
     return users
+
+def getConsumablesDict():
+    consumables = []
+    for cons in Consumable.objects.all():
+        consumables.append(cons.getDict())
+    return consumables
+
+def getProductsDict():
+    products = []
+    for product in Consumable.objects.filter(item_type='Product'):
+        products.append(product.getDict())
+    return products
+
+def getCouponsDict():
+    coupons = []
+    for coupon in Consumable.objects.filter(item_type='Coupon'):
+        coupons.append(coupon.getDict())
+    return coupons
