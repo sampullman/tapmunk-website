@@ -64,7 +64,7 @@
         <div id="login">
           <a href="#" class="grey button" id="login_button">Login<span></span></a>
           <fieldset id="login_menu" class="menu">
-            <form method="post" id="signin" action="/admin/">
+            <form method="post" id="signin" action="/account/">
               {% csrf_token %}
               <input type="hidden" name="service" value="web" />
               <label for="username">Username or email</label>

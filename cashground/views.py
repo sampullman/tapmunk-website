@@ -34,7 +34,7 @@ def admin_account(request, user):
     return crsf_render(request, 'admin.html', c)
 
 def user_account(request, user):
-    return crsf_render(request, 'user.html', {"user":user.getDict()})
+    return crsf_render(request, 'user.html', {"user":user.get_profile().getDict()})
 
 def advertiser_account(request, user):
     return crsf_render(request, 'advertiser.html', {"advertiser":user.getDict()})
@@ -46,7 +46,7 @@ def account(request):
     if user is None:
         return HttpResponse('Error: Invalid credentials.')
     elif not user.is_active:
-        return return HttpResponse('Error: User is inactive.')
+        return HttpResponse('Error: User is inactive.')
     login(request, user)
     groups = group = user.groups.all()
     if len(groups) > 0:
@@ -55,6 +55,8 @@ def account(request):
             return user_account(request, user)
         elif group.name == 'Advertiser':
             return advertiser_account(request, user)
+        else:
+            return HttpResponse('Unkown error occured.')
     else:
         return admin_account(request, user)
     
