@@ -29,19 +29,36 @@ def cashground(request):
 def cashground_login(request):
     return crsf_render(request, 'login.html');
 
-def admin(request):
+def admin_account(request, user):
+    c = { "ads":getAdsDict(), 'users':getUsersDict(), 'consumables':getConsumablesDict(), "ad_types":AD_TYPES }
+    return crsf_render(request, 'admin.html', c)
+
+def user_account(request, user):
+    return crsf_render(request, 'user.html', {"user":user.getDict()})
+
+def advertiser_account(request, user):
+    return crsf_render(request, 'advertiser.html', {"advertiser":user.getDict()})
+
+def account(request):
     username = request.POST['username']
     password = request.POST['password']
     user = authenticate(username=username, password=password)
-    if user is not None:
-        if user.is_active:
-            login(request, user)
-            c = { "ads":getAdsDict(), 'users':getUsersDict(), 'consumables':getConsumablesDict(), "ad_types":AD_TYPES }
-            return crsf_render(request, 'admin.html', c)
-        else:
-            return HttpResponse('Error: User is inactive.')
-    else:
+    if user is None:
         return HttpResponse('Error: Invalid credentials.')
+    elif not user.is_active:
+        return return HttpResponse('Error: User is inactive.')
+    login(request, user)
+    groups = group = user.groups.all()
+    if len(groups) > 0:
+        group = groups[0]
+        if group.name == 'User':
+            return user_account(request, user)
+        elif group.name == 'Advertiser':
+            return advertiser_account(request, user)
+    else:
+        return admin_account(request, user)
+    
+    
 
 def makeResponse(data='', success=True, name=''):
     return HttpResponse(json.dumps({'success':success, 'request_name':name,

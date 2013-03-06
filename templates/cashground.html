@@ -7,82 +7,84 @@
 </head>
 <body>
   <div id="content">
-    <div id="top_bar">
-      <div id="user_signup">
-        <a href="#" class="blue button" id="user_signup_button">User Signup<span></span></a>
-        <fieldset id="user_signup_menu" class="menu">
-          <form method="post" id="signin" action="">
-            <label for="username">Username</label>
-            <input id="username" name="username" value="" title="username" tabindex="4" type="text">
-            <p>
-              <label for="email">Email</label>
-              <input id="email" name="email" value="" title="email" tabindex="5" type="text">
-            </p>
-            <p>
-              <label for="password">Password</label>
-              <input id="password" name="password" value="" title="password" tabindex="5" type="password">
-            </p>
-            <p>
-              <label for="verify_password">Verify Password</label>
-              <input id="verify_password" name="verify_password" value="" title="verify_password"
-                     tabindex="5" type="password">
-            </p>
-            <p class="remember">
-              <input class="menu_submit" value="Register" tabindex="6" type="submit">
-            </p>
-          </form>
-        </fieldset>
-      </div>
-      <div id="advertiser_signup">
-        <a href="#" class="green button" id="advertiser_signup_button">Advertiser Signup<span></span></a>
-        <fieldset id="advertiser_signup_menu" class="menu">
-          <form method="post" id="signin" action="">
-            <label for="username">Username</label>
-            <input id="username" name="username" value="" title="username" tabindex="4" type="text">
-            <p>
-              <label for="email">Email</label>
-              <input id="email" name="email" value="" title="email" tabindex="5" type="text">
-            </p>
-            <p>
-              <label for="password">Password</label>
-              <input id="password" name="password" value="" title="password" tabindex="5" type="password">
-            </p>
-            <p>
-              <label for="verify_password">Verify Password</label>
-              <input id="verify_password" name="verify_password" value="" title="verify_password"
-                     tabindex="5" type="password">
-            </p>
-            <p class="remember">
-              <input class="menu_submit" value="Register" tabindex="6" type="submit">
-            </p>
-          </form>
-        </fieldset>
-      </div>
-      <div id="login">
-        <a href="#" class="grey button" id="login_button">Login<span></span></a>
-        <fieldset id="login_menu" class="menu">
-          <form method="post" id="signin" action="/cashground/admin/">
-            {% csrf_token %}
-            <input type="hidden" name="service" value="web" />
-            <label for="username">Username or email</label>
-            <input id="username" name="username" value="" title="username" tabindex="4" type="text">
-            <p>
-              <label for="password">Password</label>
-              <input id="password" name="password" value="" title="password" tabindex="5" type="password">
-            </p>
-            <p class="remember">
-              <input class="menu_submit" value="Sign in" tabindex="6" type="submit">
-            </p>
-            <p class="forgot"> <a href="#" id="resend_password_link">Forgot your password?</a> </p>
-            <p class="forgot-username">
-              <a id="forgot_username_link "
-                 title="If you remember your password, try logging in with your email"
-                 href="#">Forgot your username?</a> </p>
-          </form>
-        </fieldset>
-      </div>
-    </div>
     <div id="top">
+      <div id="top_button_wrap">
+        <div id="user_signup">
+          <a href="#" class="blue button" id="user_signup_button">User Signup<span></span></a>
+          <fieldset id="user_signup_menu" class="menu">
+            <form method="post" id="user_signup_form" action="">
+              {% csrf_token %}
+              <label for="username">Username</label>
+              <input id="group" name="group" value="User" type="hidden">
+              <input id="username" name="username" value="" title="username" tabindex="4" type="text">
+              <p>
+                <label for="email">Email</label>
+                <input id="email" name="email" value="" title="email" tabindex="5" type="text">
+              </p>
+              <p>
+                <label for="password">Password</label>
+                <input id="password" name="password" value="" title="password" tabindex="5" type="password">
+              </p>
+              <p>
+                <label for="verify_password">Verify Password</label>
+                <input id="verify_password" name="verify_password" value="" title="verify_password"
+                       tabindex="5" type="password">
+              </p>
+              <p class="remember">
+                <input class="menu_submit" value="Register" tabindex="6" type="submit">
+              </p>
+            </form>
+          </fieldset>
+        </div>
+        <div id="advertiser_signup">
+          <a href="#" class="green button" id="advertiser_signup_button">Advertiser Signup<span></span></a>
+          <fieldset id="advertiser_signup_menu" class="menu">
+            <form method="post" id="signin" action="">
+              <label for="username">Username</label>
+              <input id="username" name="username" value="" title="username" tabindex="4" type="text">
+              <p>
+                <label for="email">Email</label>
+                <input id="email" name="email" value="" title="email" tabindex="5" type="text">
+              </p>
+              <p>
+                <label for="password">Password</label>
+                <input id="password" name="password" value="" title="password" tabindex="5" type="password">
+              </p>
+              <p>
+                <label for="verify_password">Verify Password</label>
+                <input id="verify_password" name="verify_password" value="" title="verify_password"
+                       tabindex="5" type="password">
+              </p>
+              <p class="remember">
+                <input class="menu_submit" value="Register" tabindex="6" type="submit">
+              </p>
+            </form>
+          </fieldset>
+        </div>
+        <div id="login">
+          <a href="#" class="grey button" id="login_button">Login<span></span></a>
+          <fieldset id="login_menu" class="menu">
+            <form method="post" id="signin" action="/admin/">
+              {% csrf_token %}
+              <input type="hidden" name="service" value="web" />
+              <label for="username">Username or email</label>
+              <input id="username" name="username" value="" title="username" tabindex="4" type="text">
+              <p>
+                <label for="password">Password</label>
+                <input id="password" name="password" value="" title="password" tabindex="5" type="password">
+              </p>
+              <p class="remember">
+                <input class="menu_submit" value="Sign in" tabindex="6" type="submit">
+              </p>
+              <p class="forgot"> <a href="#" id="resend_password_link">Forgot your password?</a> </p>
+              <p class="forgot-username">
+                <a id="forgot_username_link "
+                   title="If you remember your password, try logging in with your email"
+                   href="#">Forgot your username?</a> </p>
+            </form>
+          </fieldset>
+        </div>
+      </div>
       <div id="title">
         CashGround
       </div>
