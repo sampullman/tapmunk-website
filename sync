@@ -1,2 +1,11 @@
 #!/bin/bash
-./templates/sync_html
+
+if [ $# -eq 0 ]
+  then
+    ./templates/sync_html
+    ./sync_apps
+elif [ "$1" == "html" ]; then
+    ./templates/sync_html
+elif [ "$1" == "apps" ]; then
+    ./sync_apps
+fi
