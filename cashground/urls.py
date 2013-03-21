@@ -4,5 +4,5 @@ urlpatterns = patterns(
     'cashground.views',
     url(r'^$', 'cashground'),
     url(r'^request/$', 'request'),
-    url(r'^account/$', 'account')
+    url(r'^account/$', 'account'),
 )

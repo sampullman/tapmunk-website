@@ -12,19 +12,23 @@
 <div class="content">
 <h1>Active ads</h1>
 <table id="ads">
-<tr class="table_title"><th>Icon</th><th>Title</th><th>Value(cents)</th><th>Type</th><th>Published</th><th></th></tr>
+<tr class="table_title"><th>Icon</th><th>Title</th><th>Value(cents)</th>
+  <th>Type</th><th>Uri</th><th>Image</th><th>Quiz</th><th>Published</th><th></th></tr>
 {% for ad in ads %}
 <tr id="{{ad.id}}">
   <td class="icon"><img src="{{ ad.icon }}" /></td>
   <td><input type="text" value="{{ ad.title }}" /></td>
   <td><input type="text" value="{{ ad.value }}" /></td>
   <td>
-    <SELECT name="type">
+    <SELECT class="ad_type" name="type">
       {% for value, name in ad_types %}
       <OPTION value="{{ value }}" {% if value == ad.type %}selected="selected"{% endif %}>
         {{ name }}</OPTION>
       {% endfor %}
-    </SELECT></td>
+  </SELECT></td>
+  <td><input type="text" value="{{ ad.uri }}" /></td>
+  <td><input type="text" value="{{ ad.image }}" /></td>
+  <td><textarea rows="15" cols="60"></textarea></td>
   <td>{{ ad.timestamp }}</td>
   <td><input type="button" class="delete" value="Delete"/></td>
 </tr>

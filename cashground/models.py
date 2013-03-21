@@ -14,7 +14,6 @@ class UserProfile(models.Model):
 
 class Advertiser(models.Model):
     timestamp = models.DateTimeField('date published')
-    name = models.CharField(max_length=30)
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -36,10 +35,12 @@ class Ad(models.Model):
     title = models.CharField(max_length=20)
     timestamp = models.DateTimeField('date published')
     ad_type = models.IntegerField()
-    image = models.URLField()
+    icon = models.URLField()
+    uri = models.CharField(max_length=40)
     data = models.CharField(max_length=300)
     campaign = models.ForeignKey(Campaign)
     value = models.IntegerField()
+    image = models.CharField(max_length=40)
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -47,15 +48,29 @@ class Ad(models.Model):
         super(Ad, self).save(*args, **kwargs)
 
     def getDict(self):
-        return { 'title':self.title, 'type':self.ad_type,
-                 'data':"", 'icon':self.image, 'value':self.value,
-                 'timestamp':str(self.timestamp), 'id':self.id} 
+        return { 'title':self.title, 'type':self.ad_type, 'uri':self.uri,
+                 'data':"", 'icon':self.icon, 'value':self.value,
+                 'timestamp':str(self.timestamp), 'id':self.id, 'image':self.image} 
 
-    def update(self, title, ad_type, icon, value):
+    def update(self, title, ad_type, icon, value, uri, image):
         self.title = title
         self.ad_type = ad_type
-        self.image = icon
+        self.icon = icon
         self.value = value
+        self.uri = uri
+        self.image = image
+
+class AdQuiz(models.Model):
+    ad = models.ForeignKey(Ad)
+
+class AdQuizQuestion(models.Model):
+    question = models.CharField(max_length=50)
+    quiz = models.ForeignKey(AdQuiz)
+
+class AdQuizAnswer(models.Model):
+    correct = models.BooleanField(default=False)
+    answer = models.CharField(max_length=20)
+    question = models.ForeignKey(AdQuizQuestion)
 
 class ViewedAd(models.Model):
     user = models.ForeignKey(User)

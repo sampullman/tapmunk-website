@@ -1,0 +1,4 @@
+#!/bin/bash
+rm ./cashground/*.pyc
+rm ./cashground/*~
+rsync -vaz -e ssh ./cashground/ sampullm@martha.asmallorange.com:~/cashground-website/cashground

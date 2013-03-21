@@ -7,15 +7,16 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User,Group
 from models import *
 
-VIDEO_AD = 20;
-APP_DOWNLOAD = 21;
-MAKE_PURCHASE = 22;
-FACEBOOK_LIKE = 23;
-TWITTER_FOLLOW = 24;
-WEB_AD= 25;
+VIDEO_AD = 20
+ANDROID_DOWNLOAD = 21
+IPHONE_DOWNLOAD = 22
+MAKE_PURCHASE = 23
+FACEBOOK_LIKE = 24
+TWITTER_FOLLOW = 25
+WEB_AD= 26
 
 #AD_TYPES = [VIDEO_AD, APP_DOWNLOAD, MAKE_PURCHASE, FACEBOOK_LIKE, TWITTER_FOLLOW, WEB_AD];
-AD_TYPES= [ [VIDEO_AD, "Video Ad"], [APP_DOWNLOAD, "App Download"],
+AD_TYPES= [ [VIDEO_AD, "Video Ad"], [ANDROID_DOWNLOAD, "Android Download"], [IPHONE_DOWNLOAD, "iPhone Download"],
             [MAKE_PURCHASE, "Make Purchase"], [FACEBOOK_LIKE, "Facebook Like"],
             [TWITTER_FOLLOW, "Twitter Follow"], [WEB_AD, "Web Ad"] ];
 
@@ -30,7 +31,7 @@ def cashground_login(request):
     return crsf_render(request, 'login.html');
 
 def admin_account(request, user):
-    c = { "ads":getAdsDict(), 'users':getUsersDict(), 'consumables':getConsumablesDict(), "ad_types":AD_TYPES }
+    c = { "ads":getAdsDict('admin'), 'users':getUsersDict(), 'consumables':getConsumablesDict(), "ad_types":AD_TYPES }
     return crsf_render(request, 'admin.html', c)
 
 def user_account(request, user):
@@ -42,23 +43,29 @@ def advertiser_account(request, user):
 def account(request):
     username = request.POST['username']
     password = request.POST['password']
-    user = authenticate(username=username, password=password)
-    if user is None:
-        return HttpResponse('Error: Invalid credentials.')
-    elif not user.is_active:
-        return HttpResponse('Error: User is inactive.')
-    login(request, user)
-    groups = group = user.groups.all()
-    if len(groups) > 0:
-        group = groups[0]
-        if group.name == 'User':
-            return user_account(request, user)
-        elif group.name == 'Advertiser':
-            return advertiser_account(request, user)
-        else:
-            return HttpResponse('Unkown error occured.')
+    if request.POST['name'] == 'register':
+        group = request.POST['group']
+        email = request.POST['email']
+        user = registerUser(username, password, email, group)
+        return user_account(request, user)
     else:
-        return admin_account(request, user)
+        user = authenticate(username=username, password=password)
+        if user is None:
+            return HttpResponse('Error: Invalid credentials.')
+        elif not user.is_active:
+            return HttpResponse('Error: User is inactive.')
+        login(request, user)
+        groups = group = user.groups.all()
+        if len(groups) > 0:
+            group = groups[0]
+            if group.name == 'User':
+                return user_account(request, user)
+            elif group.name == 'Advertiser':
+                return advertiser_account(request, user)
+            else:
+                return HttpResponse('Unkown error occured.')
+        else:
+            return admin_account(request, user)
     
     
 
@@ -74,18 +81,24 @@ def request(request):
         request = json.loads(raw)
         query = request['name'];
         if(query == 'requestAds'):
-            ads = getAdsDict()
+            service = request['service']
+            ads = getAdsDict(service)
             return makeResponse({'ads': ads }, name=query)
         elif query == 'createAd':
-            ad = Ad(title=request['title'], ad_type=request['type'],
-                    image=request['icon'], value=request['value'], data="", campaign=Campaign.objects.all()[0])
+            quiz = request['quiz']
+            ad = Ad(title=request['title'], ad_type=request['type'], uri=request['uri'], image=request['image'],
+                    icon=request['icon'], value=request['value'], data="", campaign=Campaign.objects.all()[0])
             ad.save()
+            createQuiz(ad, quiz)
             return makeResponse({ 'id':ad.id, 'timestamp':str(ad.timestamp) }, True, query)
         elif query == 'updateAd':
             ad = Ad.objects.get(id=request['id'])
             if ad:
-                ad.update(request['title'], request['type'], request['icon'], request['value'])
+                quiz = request['quiz']
+                ad.update(request['title'], request['type'], request['icon'], request['value'], request['uri'], request['image'])
                 ad.save()
+                deleteQuiz(ad)
+                createQuiz(ad, quiz)
                 return makeResponse('', True, query)
             else:
                 return makeResponse({'error':'User not in database.'}, False, query)
@@ -120,11 +133,7 @@ def request(request):
             password = request['password']
             email = request['email']
             group = request['group']
-            user = User.objects.create_user(username, email, password)
-            user.groups.add(Group.objects.get(name=group))
-            user.save()
-            profile = UserProfile(ads_viewed=0, cash=0, user=user)
-            profile.save()
+            registerUser(username, password, email, group)
             return makeResponse({'id':user.id}, name=query)
         elif query == 'deleteUser':
             id = request['id']
@@ -159,10 +168,20 @@ def request(request):
         error = e.message
         return makeResponse({ 'error': error }, False, query)
 
-def getAdsDict():
+def getServiceFilter(service):
+    if service == 'iphone':
+        return ANDROID_DOWNLOAD
+    elif service == 'admin':
+        return -1
+    else:
+        return IPHONE_DOWNLOAD
+
+def getAdsDict(service):
     ads = []
-    for ad in Ad.objects.all():
-        ads.append(ad.getDict())
+    for ad in Ad.objects.exclude(ad_type=getServiceFilter(service)):
+        dic = ad.getDict()
+        dic['quiz'] = getQuiz(ad)
+        ads.append(dic)
     return ads
 
 def getUsersDict():
@@ -188,3 +207,48 @@ def getCouponsDict():
     for coupon in Consumable.objects.filter(item_type='Coupon'):
         coupons.append(coupon.getDict())
     return coupons
+
+def getQuiz(ad):
+    quizzes = AdQuiz.objects.filter(ad=ad)
+    if len(quizzes) == 0:
+        return ""
+    else:
+        quiz = quizzes[0]
+    questions = AdQuizQuestion.objects.filter(quiz=quiz)
+    questionList = []
+    answerList = []
+    for question in questions:
+        questionList.append(question.question)
+        answers = AdQuizAnswer.objects.filter(question=question)
+        curAnswers = [answers.filter(correct=True)[0].answer]
+        for answer in answers.filter(correct=False):
+            curAnswers.append(answer.answer)
+        answerList.append(curAnswers)
+    return { "questions":questionList, "answers":answerList }
+
+def createQuiz(ad, quizInfo):
+    quiz = AdQuiz(ad=ad)
+    quiz.save()
+    questions = quizInfo['questions']
+    answers = quizInfo['answers']
+    for i in range(len(questions)):
+        quest = AdQuizQuestion(quiz=quiz, question=questions[i])
+        quest.save()
+        curAnswers = answers[i]
+        ans = AdQuizAnswer(question=quest, answer=curAnswers[0], correct=True)
+        ans.save()
+        for answer in curAnswers[1:]:
+            ans = AdQuizAnswer(question=quest, answer=answer, correct=False)
+            ans.save()
+
+def deleteQuiz(ad):
+    for quiz in AdQuiz.objects.filter(ad=ad):
+        quiz.delete()
+
+def registerUser(username, password, email, group):
+    user = User.objects.create_user(username, email, password)
+    user.groups.add(Group.objects.get(name=group))
+    user.save()
+    profile = UserProfile(ads_viewed=0, cash=0, user=user)
+    profile.save()
+    return user
