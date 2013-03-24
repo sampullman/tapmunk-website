@@ -73,9 +73,14 @@ class AdQuizAnswer(models.Model):
     question = models.ForeignKey(AdQuizQuestion)
 
 class ViewedAd(models.Model):
-    user = models.ForeignKey(User)
-    ad = models.OneToOneField(Ad)
+    user = models.ForeignKey(UserProfile)
+    ad = models.ForeignKey(Ad)
     timestamp = models.DateTimeField('date published')
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.timestamp = timezone.now()
+        super(ViewedAd, self).save(*args, **kwargs)
 
 ConsumableTypes = ['Product', 'Coupon']
 class Consumable(models.Model):

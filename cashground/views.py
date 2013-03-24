@@ -106,6 +106,18 @@ def request(request):
             adId = request['id'];
             Ad.objects.filter(id=adId).delete()
             return makeResponse(name=query);
+        elif query == 'watchedAd':
+            userId = request['userId']
+            adId = request['adId']
+            try:
+                ad = Ad.objects.get(id=adId)
+                user = User.objects.get(id=userId)
+                userProf = UserProfile.objects.get(user=user)
+                userProf.cash += ad.value
+                userProf.save()
+            except:
+                return makeResponse({'error':'Could not update (invalid ad id or user).'}, False, query)
+            return makeResponse({ 'cash': userProf.cash }, name=query)
         elif query == 'loginUser':
             username = request['username']
             password = request['password']
@@ -115,7 +127,8 @@ def request(request):
                 if user.is_active:
                     if service == 'web':
                         login(request, user)
-                    return makeResponse(data={ 'id': user.id }, name=query)
+                    prof = UserProfile.objects.get(user=user)
+                    return makeResponse(data={ 'id': user.id, 'cash': prof.cash }, name=query)
                 else:
                     return makeResponse({ 'error': 'User is inactive.' }, False, query)
             else:
