@@ -8,4 +8,11 @@ elif [ "$1" == "html" ]; then
     ./templates/sync_html
 elif [ "$1" == "apps" ]; then
     ./sync_apps
+elif [ "$1" == "commit" ]; then
+    git pull
+    ./templates/sync_html
+    ./sync_apps
+    git add .
+    git commit -a -m "$2"
+    git push origin master
 fi
