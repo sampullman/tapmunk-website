@@ -8,17 +8,18 @@ from django.contrib.auth.models import User,Group
 from models import *
 
 VIDEO_AD = 20
-ANDROID_DOWNLOAD = 21
-IPHONE_DOWNLOAD = 22
-MAKE_PURCHASE = 23
-FACEBOOK_LIKE = 24
-TWITTER_FOLLOW = 25
-WEB_AD= 26
+WEB_AD = 21
+ANDROID_DOWNLOAD = 22
+IPHONE_DOWNLOAD = 23
+MAKE_PURCHASE = 24
+FACEBOOK_LIKE = 25
+TWITTER_FOLLOW = 26
+GOOGLE_PLUS_ONE = 27
 
 #AD_TYPES = [VIDEO_AD, APP_DOWNLOAD, MAKE_PURCHASE, FACEBOOK_LIKE, TWITTER_FOLLOW, WEB_AD];
 AD_TYPES= [ [VIDEO_AD, "Video Ad"], [ANDROID_DOWNLOAD, "Android Download"], [IPHONE_DOWNLOAD, "iPhone Download"],
             [MAKE_PURCHASE, "Make Purchase"], [FACEBOOK_LIKE, "Facebook Like"],
-            [TWITTER_FOLLOW, "Twitter Follow"], [WEB_AD, "Web Ad"] ];
+            [TWITTER_FOLLOW, "Twitter Follow"], [GOOGLE_PLUS_ONE, "Google Plus One"], [WEB_AD, "Web Ad"] ];
 
 def crsf_render(request, url, c={}):
     c.update(csrf(request))
