@@ -3,10 +3,23 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User,Group
 from views import *
 
+VIDEO_AD = 20
+WEB_AD = 21
+ANDROID_DOWNLOAD = 22
+IPHONE_DOWNLOAD = 23
+MAKE_PURCHASE = 24
+FACEBOOK_LIKE = 25
+TWITTER_FOLLOW = 26
+GOOGLE_PLUS_ONE = 27
+
 def getRequestName(request):
     raw = request.POST.keys()[0]
     data = json.loads(raw)
     return (data['name'], data)
+
+def makeResponse(data='', success=True, name=''):
+    return HttpResponse(json.dumps({'success':success, 'request_name':name,
+                                    'data': data}))
 
 def makeErrorResponse(query, error):
     return makeResponse({ 'error': error }, False, query)
@@ -17,21 +30,21 @@ def ads_request(request):
     try:
         query, data = getRequestName(request)
         if(query == 'requestAds'):
-            service = request['service']
+            service = data['service']
             ads = getAdsDict(service)
             return makeResponse({'ads': ads }, name=query)
         elif query == 'createAd':
-            quiz = request['quiz']
-            ad = Ad(title=request['title'], ad_type=request['type'], uri=request['uri'], image=request['image'],
-                    icon=request['icon'], value=request['value'], data="", campaign=Campaign.objects.all()[0])
+            quiz = data['quiz']
+            ad = Ad(title=data['title'], ad_type=data['type'], uri=data['uri'], image=data['image'],
+                    icon=data['icon'], value=data['value'], data="", campaign=Campaign.objects.all()[0])
             ad.save()
             createQuiz(ad, quiz)
             return makeResponse({ 'id':ad.id, 'timestamp':str(ad.timestamp) }, True, query)
         elif query == 'updateAd':
-            ad = Ad.objects.get(id=request['id'])
+            ad = Ad.objects.get(id=data['id'])
             if ad:
-                quiz = request['quiz']
-                ad.update(request['title'], request['type'], request['icon'], request['value'], request['uri'], request['image'])
+                quiz = data['quiz']
+                ad.update(data['title'], data['type'], data['icon'], data['value'], data['uri'], data['image'])
                 ad.save()
                 deleteQuiz(ad)
                 createQuiz(ad, quiz)
@@ -39,12 +52,12 @@ def ads_request(request):
             else:
                 return makeResponse({'error':'User not in database.'}, False, query)
         elif query == 'deleteAd':
-            adId = request['id'];
+            adId = data['id'];
             Ad.objects.filter(id=adId).delete()
             return makeResponse(name=query);
         elif query == 'watchedAd':
-            userId = request['userId']
-            adId = request['adId']
+            userId = data['userId']
+            adId = data['adId']
             try:
                 ad = Ad.objects.get(id=adId)
                 user = User.objects.get(id=userId)
@@ -58,15 +71,15 @@ def ads_request(request):
         return makeErrorResponse(query, e.message)
 
 @csrf_exempt
-def user_request(request):
+def consumables_request(request):
     query = "JSON parsing failed"
     try:
         query, data = getRequestName(request)
         if query == 'createConsumable':
-            icon = request['iconURI']
-            title = request['title']
-            cost = request['cost']
-            item_type = request['type']
+            icon = data['iconURI']
+            title = data['title']
+            cost = data['cost']
+            item_type = data['type']
             cons = Consumable(title=title, icon=icon, cost=cost, item_type=item_type)
             cons.save()
             return makeResponse({'id':cons.id, 'timestamp':str(cons.timestamp) }, True, query)
@@ -77,33 +90,33 @@ def user_request(request):
         elif query == 'requestCoupons':
             return makeResponse({'coupons':getCouponsDict()}, name=query);
         elif query == 'updateConsumable':
-            consumable = Consumable.objects.get(id=request['id'])
-            consumable.item_type = request['type']
-            consumable.title = request['title']
-            consumable.cost = request['cost']
-            consumable.icon = request['iconURI']
+            consumable = Consumable.objects.get(id=data['id'])
+            consumable.item_type = data['type']
+            consumable.title = data['title']
+            consumable.cost = data['cost']
+            consumable.icon = data['iconURI']
             consumable.save()
             return makeResponse('', True, query)
         elif query == 'deleteConsumable':
-            consumable = Consumable.objects.get(id=request['id']).delete()
+            consumable = Consumable.objects.get(id=data['id']).delete()
             return makeResponse('', True, query)
     except Exception as e:
         return makeErrorResponse(query, e.message)
 
 @csrf_exempt
-def consumable_request(request):
+def user_request(request):
     query = "JSON parsing failed"
     try:
         query, data = getRequestName(request)
         if query == 'loginUser':
-            username = request['username']
-            password = request['password']
-            service = request['service']
+            username = data['username']
+            password = data['password']
+            service = data['service']
             user = authenticate(username=username, password=password)
             if user is not None:
                 if user.is_active:
                     if service == 'web':
-                        login(request, user)
+                        login(data, user)
                     prof = UserProfile.objects.get(user=user)
                     return makeResponse(data={ 'id': user.id, 'cash': prof.cash }, name=query)
                 else:
@@ -114,19 +127,19 @@ def consumable_request(request):
             users = getUsersDict()
             return makeResponse({'users': users }, name=query)            
         elif query == 'updateUser':
-            user = User.objects.get(id=request['id'])
-            user.username = request['username']
+            user = User.objects.get(id=data['id'])
+            user.username = data['username']
             user.save()
             return makeResponse('', True, query)
         elif query == 'registerUser':
-            username = request['username']
-            password = request['password']
-            email = request['email']
-            group = request['group']
+            username = data['username']
+            password = data['password']
+            email = data['email']
+            group = data['group']
             registerUser(username, password, email, group)
             return makeResponse({'id':user.id}, name=query)
         elif query == 'deleteUser':
-            id = request['id']
+            id = data['id']
             User.objects.get(id=id).delete()
             return makeResponse('', True, query)
     except Exception as e:
@@ -168,3 +181,51 @@ def createQuiz(ad, quizInfo):
 def deleteQuiz(ad):
     for quiz in AdQuiz.objects.filter(ad=ad):
         quiz.delete()
+
+def getServiceFilter(service):
+    if service == 'iphone':
+        return ANDROID_DOWNLOAD
+    elif service == 'admin':
+        return -1
+    else:
+        return IPHONE_DOWNLOAD
+
+def getAdsDict(service):
+    ads = []
+    for ad in Ad.objects.exclude(ad_type=getServiceFilter(service)):
+        dic = ad.getDict()
+        dic['quiz'] = getQuiz(ad)
+        ads.append(dic)
+    return ads
+
+def getUsersDict():
+    users = []
+    for user in UserProfile.objects.all():
+        users.append(user.getDict())
+    return users
+
+def getConsumablesDict():
+    consumables = []
+    for cons in Consumable.objects.all():
+        consumables.append(cons.getDict())
+    return consumables
+
+def getProductsDict():
+    products = []
+    for product in Consumable.objects.filter(item_type='Product'):
+        products.append(product.getDict())
+    return products
+
+def getCouponsDict():
+    coupons = []
+    for coupon in Consumable.objects.filter(item_type='Coupon'):
+        coupons.append(coupon.getDict())
+    return coupons
+
+def registerUser(username, password, email, group):
+    user = User.objects.create_user(username, email, password)
+    user.groups.add(Group.objects.get(name=group))
+    user.save()
+    profile = UserProfile(ads_viewed=0, cash=0, user=user)
+    profile.save()
+    return user
