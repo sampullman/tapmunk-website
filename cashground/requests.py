@@ -1,6 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User,Group
+from django.core.mail import send_mail
 from views import *
 
 VIDEO_AD = 20
@@ -23,6 +24,18 @@ def makeResponse(data='', success=True, name=''):
 
 def makeErrorResponse(query, error):
     return makeResponse({ 'error': error }, False, query)
+
+@csrf_exempt
+def general_request(request):
+    try:
+        query, data = getRequestName(request)
+        if query == 'contactEmail':
+            text = data['text']
+            sender = data['sender']
+            send_mail('Site Contact', text, sender, ('casheggshared@gmail.com',), fail_silently=False)
+            return makeResponse(name='contactEmail')
+    except Exception as e:
+        return makeErrorResponse(query, e.message)
 
 @csrf_exempt
 def ads_request(request):
