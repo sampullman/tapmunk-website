@@ -1,29 +1,26 @@
-<!DOCTYPE html>
-<head>
-  <link rel="stylesheet" href="https://dl.dropbox.com/s/k3wnx3n2u9s4k31/common.css" type='text/css' />
+{% extends "base.html" %}
+
+{% block head %}
   <link rel="stylesheet" href="https://dl.dropbox.com/s/4k0hn0yomdct09q/main.css" type='text/css' />
-  <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js'></script>
   <script type='text/javascript' src='https://dl.dropbox.com/s/i0e7od4tq8dhncx/main.js'></script>
   <script type='text/javascript' src='https://dl.dropbox.com/u/80197158/static/jquery.inputhints.min.js'></script>
   <title>CashEgg</title>
-</head>
-<body>
-  <div id="content">
-    <div id="top_bar">
-      <table id="left_table" class="top_table">
-        <tr>
-          <td class="title">CashEgg</td>
-          <td class="table_space"></td>
-          <td id="features_button" class="top_bar_button">Features</td>
-          <td id="contact_button" class="top_bar_button">Contact Us</td>
-        </tr>
-      </table>
-      <table id="login" class="top_table">
-        <tr>
-          <td class="top_bar_button">Login</td>
-        </tr>
-      </table>
-    </div>
+{% endblock %}
+
+{% block nav %}
+  <td id="features_button" class="top_bar_button">Features</td>
+  <td id="contact_button" class="top_bar_button">Contact Us</td>
+{% endblock %}
+
+{% block topbar %}
+  <table id="login" class="top_table">
+  	<tr>
+  	  <td class="top_bar_button">Login</td>
+    </tr>
+  </table>
+{% endblock %}
+	  
+{% block content %}
     <div id="main">
       <div id="coming_soon">Coming Soon!</div>
       <span id="main_text">Browse Ads. Earn Cash. Simple.</span>
@@ -132,6 +129,4 @@
       </form>
     </div>
   </div>
-</div>
-</body>
-</html>
+{% endblock }
