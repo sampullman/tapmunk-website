@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+  
+{% block head %}
+  <script type='text/javascript' src='https://dl.dropbox.com/s/j3irk6n6ufinvig/signup.js' />
+  <link rel="stylesheet" href="https://dl.dropbox.com/s/t173otztrfgbele/signup.css" type='text/css' />
+  <title>CashEgg Signup</title>
+{% endblock %}
+
+{% block content %}
+<div id="title">
+	<h1>CashEgg Signup</h1>
+</div>
+<div id="signup">
+	User Name: <input type="text" name="username" />
+</div>
+<div id="signup_submit_holder">
+	<a href="#" class="button button-blue">
+      <span id="signup_submit">Submit</span>
+    </a>
+</div>
+{% endblock %}

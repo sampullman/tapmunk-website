@@ -8,4 +8,6 @@ urlpatterns = patterns(
     url(r'^request/user$', 'user_request'),
     url(r'^request/consumables$', 'consumables_request'),
     url(r'^account/$', 'account'),
+    url(r'^signup/$', 'signup'),
+    url(r'^signup/admin$', 'signup_admin')
 )

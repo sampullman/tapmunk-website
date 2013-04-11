@@ -16,10 +16,16 @@ def crsf_render(request, url, c={}):
     return render_to_response(url, c)
 
 def cashground(request):
-    return crsf_render(request, 'cashground.html');
+    return crsf_render(request, 'cashground.html')
 
+def signup(request):
+    return crsf_render(request, 'signup.html')
+    
+def signup_admin(request):
+    return crsf_render(request, 'signup_admin.html')
+    
 def cashground_login(request):
-    return crsf_render(request, 'login.html');
+    return crsf_render(request, 'login.html')
 
 def admin_account(request, user):
     c = { "ads":getAdsDict('admin'), 'users':getUsersDict(), 'consumables':getConsumablesDict(), "ad_types":AD_TYPES }
