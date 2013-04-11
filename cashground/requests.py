@@ -34,6 +34,13 @@ def general_request(request):
             sender = data['sender']
             send_mail('Site Contact', text, sender, ('casheggshared@gmail.com',), fail_silently=False)
             return makeResponse(name='contactEmail')
+        elif query == 'requestPreSignups':
+            profiles = getPresignupProfiles()
+            return makeResponse({'profiles': profiles}, name=query)
+        elif query == 'createPreSignup':
+            username = data['username']
+            email = data['email']
+            profile
     except Exception as e:
         return makeErrorResponse(query, e.message)
 
@@ -214,6 +221,12 @@ def getAdsDict(service):
 def getUsersDict():
     users = []
     for user in UserProfile.objects.all():
+        users.append(user.getDict())
+    return users
+    
+def getPreSignupProfiles():
+    users = []
+    for user in PreSignupProfile.objects.all().order_by('timestamp'):
         users.append(user.getDict())
     return users
 

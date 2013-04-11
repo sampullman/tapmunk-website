@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+  
+{% block head %}
+  <script type='text/javascript' src='https://dl.dropbox.com/s/j3irk6n6ufinvig/signup.js'></script>
+  <link rel="stylesheet" href="https://dl.dropbox.com/s/t173otztrfgbele/signup.css" type='text/css' />
+  <title>CashEgg Signup Admin</title>
+{% endblock %}
+
+{% block content %}
+<div id="title">
+	<h1>Signup List</h1>
+</div>
+<table id="profiles">
+<tr class="table_title"><th>User Name</th><th>Email</th><th>Time</th>
+  <th>Notes</th></tr>
+{% for prof in profiles %}
+<tr>
+  <td>{{ prof.username }}</td>
+  <td>{{ prof.email }}</td>
+  <td>{{ prof.timestamp }}</td>
+  <td><textarea rows="5" cols="80">{{ prof.notes }}</textarea></td>
+</tr>
+{% endfor %}
+</table>
+
+{% endblock %}

@@ -11,6 +11,20 @@ class UserProfile(models.Model):
     def getDict(self):
         return {'name':self.user.username, 'timestamp':str(self.user.date_joined),
                 'cash':self.cash, 'ads_viewed':self.ads_viewed, 'id':self.user.id}
+                
+class SignupProfile(models.Model):
+    username = models.CharField(max_length=20)
+    email = models.CharField(max_length=30)
+    notes = models.CharField(max_length=500)
+    timestamp = models.DateTimeField('date published')
+    
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.timestamp = timezone.now()
+        super(SignupProfile, self).save(*args, **kwargs)
+        
+    def getDict(self):
+        return {'username':self.username, 'email':self.email 'notes':notes }
 
 class Advertiser(models.Model):
     timestamp = models.DateTimeField('date published')
