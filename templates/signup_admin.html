@@ -10,18 +10,12 @@
 <div id="title">
 	<h1>Signup List</h1>
 </div>
-<table id="profiles">
-<tr class="table_title"><th>User Name</th><th>Email</th><th>Time</th>
-  <th>Notes</th></tr>
-  {{profiles}}
-{% for prof in profiles %}
-<tr>
-  <td>{{ prof.username }}</td>
-  <td>{{ prof.email }}</td>
-  <td>{{ prof.timestamp }}</td>
-  <td><textarea rows="5" cols="80">{{ prof.notes }}</textarea></td>
-</tr>
-{% endfor %}
-</table>
-
+<div id="signup_admin_refresh_holder">
+	<a href="#" class="button button-blue">
+      <span id="signup_admin_refresh">Refresh</span>
+    </a>
+</div>
+<div id="profiles_holder">
+{% include "signup_admin_table.html" %}
+</div>
 {% endblock %}

@@ -55,6 +55,20 @@ def general_request(request):
                 profile = PreSignupProfile(username=username, email=email, notes="")
                 profile.save()
                 return makeResponse(name=query)
+        elif query == 'savePreSignup':
+            username = data['username']
+            notes = data['notes']
+            profile = PreSignupProfile.objects.find(username=username)
+            profile.notes = notes
+            profile.save()
+            return makeResponse(name=query)
+        elif query == 'deletePreSignup':
+            username = data['username']
+            PreSignupProfile.objects.find(username=username).delete()
+            return makeResponse(name=query)
+        elif query == 'requestProfilesTable':
+            c = { 'profiles':getPreSignupProfiles() }
+            return crsf_render(request, 'signup_admin.html', c)
     except Exception as e:
         return makeErrorResponse(query, e.message)
 

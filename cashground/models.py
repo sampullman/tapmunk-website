@@ -13,8 +13,8 @@ class UserProfile(models.Model):
                 'cash':self.cash, 'ads_viewed':self.ads_viewed, 'id':self.user.id}
                 
 class PreSignupProfile(models.Model):
-    username = models.CharField(max_length=20)
-    email = models.CharField(max_length=30)
+    username = models.CharField(max_length=20, unique=True)
+    email = models.CharField(max_length=30, unique=True)
     notes = models.CharField(max_length=500)
     timestamp = models.DateTimeField('date published')
     

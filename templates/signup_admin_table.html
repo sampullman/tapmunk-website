@@ -1,0 +1,14 @@
+<table id="profiles">
+<tr class="table_title"><th>User Name</th><th>Email</th><th>Time</th>
+  <th>Notes</th><th>Save</th><th>Delete</th></tr>
+{% for prof in profiles %}
+<tr>
+  <td class="username">{{ prof.username }}</td>
+  <td>{{ prof.email }}</td>
+  <td>{{ prof.timestamp }}</td>
+  <td><textarea rows="8" cols="60">{{ prof.notes }}</textarea></td>
+  <td><input type="button" class="save" value="Save"/></td>
+  <td><input type="button" class="delete" value="Delete"/></td>
+</tr>
+{% endfor %}
+</table>
