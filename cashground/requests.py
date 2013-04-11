@@ -44,9 +44,9 @@ def general_request(request):
             email = data['email']
             if len(username) < 3 or len(username) >= 20:
                 error = "Username must be more than 2 and less than 20 characters."
-            elif !re.match(r'[a-zA-Z0-9_-]+', username):
+            elif not re.match(r'[a-zA-Z0-9_-]+', username):
                 error = "Username can only contain: a-z A-Z 0-9 - _"
-            elif !re.match(r'.+@.+\..+', email):
+            elif not re.match(r'.+@.+\..+', email):
                 error = "Please enter a valid email"
                 
             if error:

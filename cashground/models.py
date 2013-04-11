@@ -21,7 +21,7 @@ class PreSignupProfile(models.Model):
     def save(self, *args, **kwargs):
         if not self.id:
             self.timestamp = timezone.now()
-        super(SignupProfile, self).save(*args, **kwargs)
+        super(PreSignupProfile, self).save(*args, **kwargs)
         
     def getDict(self):
         return {'username':self.username, 'email':self.email, 'notes':notes }
