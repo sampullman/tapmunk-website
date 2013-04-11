@@ -2,82 +2,43 @@
 
 {% block head %}
   <link rel="stylesheet" href="https://dl.dropbox.com/s/4k0hn0yomdct09q/main.css" type='text/css' />
+  <link rel="stylesheet" href="https://dl.dropbox.com/s/z3b8nffm25agxv2/jquery.toastmessage.css" type='text/css' />
   <script type='text/javascript' src='https://dl.dropbox.com/s/i0e7od4tq8dhncx/main.js'></script>
+  <script type='text/javascript' src='https://dl.dropbox.com/s/2r8zr5hsvwvdzwl/jquery.toastmessage.js'></script>
   <script type='text/javascript' src='https://dl.dropbox.com/u/80197158/static/jquery.inputhints.min.js'></script>
   <title>CashEgg</title>
 {% endblock %}
 
-{% block nav %}
-  <td id="features_button" class="top_bar_button">Features</td>
-  <td id="contact_button" class="top_bar_button">Contact Us</td>
+{% block precontent %}
+<div id="top"></div>
+<div id="divider"></div>
+<div id="bottom"></div>
 {% endblock %}
-
-{% block topbar %}
-  <table id="login" class="top_table">
-  	<tr>
-  	  <td class="top_bar_button">Login</td>
-    </tr>
-  </table>
-{% endblock %}
-	  
 {% block content %}
-    <div id="main">
-      <div id="coming_soon">Coming Soon!</div>
-      <span id="main_text">Browse Ads. Earn Cash. Simple.</span>
-      <div id="coming_soon_button">
-        <a href="#" class="button button-blue">
-          <span id="coming_soon_button_span">Pre-register your username</span>
-        </a>
+    <div id="main" class="content_page">
+      <div class="logo"><img src="https://dl.dropbox.com/s/2z03f6jdwek41nn/cashegg_logo.png" alt="CashEgg Logo"></div>
+      <div id="coming_soon">
+		  CashEgg is coming very soon!
       </div>
+	  <br />
+	  <div id="description">
+		  With your app, you can choose to watch ads and earn real cash. Sign up via Facebook or email and follow us on Twitter so you're the first to hear when it's time to earn!
+	  </div>
+	  <br />
+	  <div id="social_icons">
+          <img src="https://dl.dropbox.com/s/bwf9rr3eidj4r4d/facebook.png"
+               alt="Facebook" width="80" height="80" id="facebook">
+	      <img src="https://dl.dropbox.com/s/giw2v6v3navu83u/twitter.png"
+	           alt="Twitter" width="80" height="80" id="twitter">
+		  <img src="https://dl.dropbox.com/s/kj8lnse78f7lnsx/mailegg.png"
+			   alt="Email" width="80" height="80" id="signup_button"> 
+	  </div>
       <div id="appstore_icons">
         <img src="https://dl.dropbox.com/u/80197158/cg_static/images/app_store.png"
-             alt="iPhone" width="200" height="70" id="app_store">
+             alt="iPhone" width="160" height="55" id="app_store">
         <img src="https://dl.dropbox.com/u/80197158/cg_static/images/play_store.png"
-             alt="Android" width="200" height="70" id="play_store">
+             alt="Android" width="160" height="55" id="play_store">
       </div>
-    </div>
-    <div id="features">
-      <h1>Frequently Asked Questions</h1>
-
-	  <h2>What is CashEgg?</h2>
-	  <p> First, do you own a smartphone? Do you like cash? If you answered yes to both,
-	  	 well, CashEgg is for you! Businesses are always dying to meet a quality person
-	  	 like you, and we've partnered with the ones willing to pay you for a date!
-	     It's absolutely spam and scam-free and simple to use.
-	  	 Who couldn’t use  more cash in their day?</p>
-	  <p>Get paid while:<br /></p>
-      <span style="text-align: left;">
-	  <ul>
-		<li>Walking down the street <a href="https://www.youtube.com/watch?v=NisCkxU544c"> like a boss</a></li>
-		<li>Avoiding eye contact on late-night public transportation</li>
-		<li>Checking your phone that last time before finally going to sleep</li>
-		<li>Whenever you want, Wherever you want!</li>
-	  </ul>
-      </span>
-	  <h2>How does it work?</h2>
-	  <p>It’s simple! Launch CashEgg to browse our wide range of promotions to see
-	    what interests you. After seeing what each business has to offer, answer an 
-	    easy comprehension question to verify you paid attention, then you'll get instantly
-	    get paid yourself! Deposit direct to Pay-Pal or your bank, or you can purchase from 
-	    our store and send gifts or cash to friends.</p>
-	  <h2>Why should I use it?</h2>
-	  <p>Advertisers spend billions of dollars fighting for your eyeballs every year, buying
-	  	tons of mobile ads no one will watch or care about. What a waste.
-	    <br/>
-	    We want to create a brighter future for mobile advertising, one that
-	    puts the power back into the hands of users. You choose what, where, and when you see,
-	     and no one will force feed you an ad again.
-	     <br/>
-	     And when you do see a cool product or brand on our app, we hope you check them out
-	     and take them up on their offers! 
-
-	    </p>
-
-	  <h2>Great, where do I sign?</h2>
-	  <p>Woah there, we keep things simple at CashEgg so no checks or contracts to sign! But
-	    if you mean you want to try our app, the best thing to do now is to <a id="faq_register" href="/#faq"> pre-register</a> your username, 
-	    to make sure your favorite-username-ever-since-middle-school doesn't get taken first.</p>
-	  <br /><br />
     </div>
     <div id="contact">
       <h1>Contact CashEgg</h1>
@@ -95,38 +56,22 @@
         </a>
       </div>
     </div>
-  </div>
-  <div id="login_menu">
-    <form id="login_form" action="/account/" method="post">
-      {% csrf_token %}
-      <input type="hidden" name="name" value="login" />
-      <input id="login_username" placeholder="Username" type="text" name="username" value="" />
-      <input id="login_password" placeholder="Password" type="password" name="password" value="" />
-      <a id="login_submit" href="#" class="button button-blue">
-        <span>Login</span>
-      </a>
-    </form>
-  </div>
-  <div class="overlay">
-    <div class="overlay_back"></div>
-    <div class="overlay_content">
-      <h2>User Registration</h2>
-      <form id="register_form" action="/account/" method="post">
-        <input type="hidden" name="group" value="User" />
-        <input type="hidden" name="name" value="register" />
-        {% csrf_token %}
-        <table id="register_table">
-          <tr><td class="input_label">Username: </td><td class="input"><input type="text" name="username" /></td></tr>
-          <tr><td class="input_label">Password: </td><td class="input"><input type="password" name="password" /></td></tr>
-          <tr><td class="input_label">Confirm: </td><td class="input"><input type="password" name="confirm" /></td></tr>
-          <tr><td class="input_label">Email: </td><td class="input"><input type="text" name="email" /></td></tr>
-        </table>
-		<div id="register_error">
+	<div id="signup" class="content_page">
+        <div class="logo"><img src="https://dl.dropbox.com/s/2z03f6jdwek41nn/cashegg_logo.png" alt="CashEgg Logo"></div>
+		<div id="title">
+			<h1>CashEgg Signup</h1>
 		</div>
-        <a id="register_submit" href="#" class="button button-blue">
-          <span>Register</span>
-        </a>
-      </form>
-    </div>
+		<div id="signup">
+			<table>
+			  <tr><td class="td1">User Name:</td><td class="td2"><input id="username" type="text" name="username" /></td></tr>
+			  <tr><td class="td1">Email:</td><td class="td2"><input id="email" type="text" name="email" /></td></tr>
+		 	</table>
+		</div>
+		<div id="signup_submit_holder">
+			<a href="#" class="button button-blue">
+		      <span id="signup_submit">Submit</span>
+		    </a>
+		</div>
+	</div>
   </div>
 {% endblock %}

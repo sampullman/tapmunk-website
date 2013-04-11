@@ -1,6 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User,Group
+from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from views import *
 import re
@@ -13,6 +14,10 @@ MAKE_PURCHASE = 24
 FACEBOOK_LIKE = 25
 TWITTER_FOLLOW = 26
 GOOGLE_PLUS_ONE = 27
+
+def crsf_render(request, url, c={}):
+    c.update(csrf(request))
+    return render_to_response(url, c)
 
 def getRequestName(request):
     raw = request.POST.keys()[0]
@@ -58,17 +63,17 @@ def general_request(request):
         elif query == 'savePreSignup':
             username = data['username']
             notes = data['notes']
-            profile = PreSignupProfile.objects.find(username=username)
+            profile = PreSignupProfile.objects.get(username=username)
             profile.notes = notes
             profile.save()
             return makeResponse(name=query)
         elif query == 'deletePreSignup':
             username = data['username']
-            PreSignupProfile.objects.find(username=username).delete()
+            PreSignupProfile.objects.get(username=username).delete()
             return makeResponse(name=query)
         elif query == 'requestProfilesTable':
             c = { 'profiles':getPreSignupProfiles() }
-            return crsf_render(request, 'signup_admin.html', c)
+            return makeResponse(render_to_string('signup_admin_table.html', c))
     except Exception as e:
         return makeErrorResponse(query, e.message)
 
@@ -254,7 +259,7 @@ def getUsersDict():
     
 def getPreSignupProfiles():
     profiles = []
-    for profile in PreSignupProfile.objects.all().order_by('timestamp'):
+    for profile in PreSignupProfile.objects.all().order_by('-timestamp'):
         profiles.append(profile.getDict())
     return profiles
 

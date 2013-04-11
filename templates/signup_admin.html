@@ -1,7 +1,9 @@
-{% extends "base.html" %}
+{% extends "old_base.html" %}
   
 {% block head %}
   <script type='text/javascript' src='https://dl.dropbox.com/s/j3irk6n6ufinvig/signup.js'></script>
+  <script type='text/javascript' src='https://dl.dropbox.com/s/2r8zr5hsvwvdzwl/jquery.toastmessage.js'></script>
+  <link rel="stylesheet" href="https://dl.dropbox.com/s/z3b8nffm25agxv2/jquery.toastmessage.css" type='text/css' />
   <link rel="stylesheet" href="https://dl.dropbox.com/s/t173otztrfgbele/signup.css" type='text/css' />
   <title>CashEgg Signup Admin</title>
 {% endblock %}
@@ -15,6 +17,7 @@
       <span id="signup_admin_refresh">Refresh</span>
     </a>
 </div>
+<br />
 <div id="profiles_holder">
 {% include "signup_admin_table.html" %}
 </div>
