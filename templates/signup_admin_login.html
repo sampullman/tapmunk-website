@@ -10,9 +10,13 @@
 <div id="title">
 	<h1>Signup Admin</h1>
 </div>
-<form id="signup_admin_login_form" action="/signup/admin" method="post">
+<div id="signup">
+  <form id="signup_admin_login_form" action="/signup/admin" method="post">
+    {% csrf_token %}
 	<input type="password" name="password" />
-</form>
+  </form>
+</div>
+<br />
 <div id="signup_submit_holder">
 	<a href="#" class="button button-blue">
       <span id="signup_admin_login">Submit</span>

@@ -23,13 +23,13 @@ def signup(request):
     
 def signup_admin(request):
     try:
-        query, data = getRequestName(request)
-        if data['password'] == 'gocashegg':
+        pw = request.POST['password']
+        if pw == 'gocashegg':
             c = { "profiles":getPreSignupProfiles() }
             return crsf_render(request, 'signup_admin.html', c)
-        return csrf_render(request, 'signup_admin_login.html')  
+        return crsf_render(request, 'signup_admin_login.html')  
     except Exception as e:
-        return csrf_render(request, 'signup_admin_login.html')
+        return crsf_render(request, 'signup_admin_login.html')
 
 def cashground_login(request):
     return crsf_render(request, 'login.html')

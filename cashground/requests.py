@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User,Group
 from django.core.mail import send_mail
 from views import *
+import re
 
 VIDEO_AD = 20
 WEB_AD = 21
@@ -38,9 +39,22 @@ def general_request(request):
             profiles = getPresignupProfiles()
             return makeResponse({'profiles': profiles}, name=query)
         elif query == 'createPreSignup':
+            error = False
             username = data['username']
             email = data['email']
-            profile
+            if len(username) < 3 or len(username) >= 20:
+                error = "Username must be more than 2 and less than 20 characters."
+            elif !re.match(r'[a-zA-Z0-9_-]+', username):
+                error = "Username can only contain: a-z A-Z 0-9 - _"
+            elif !re.match(r'.+@.+\..+', email):
+                error = "Please enter a valid email"
+                
+            if error:
+                return makeErrorResponse(query, error)
+            else:
+                profile = PreSignupProfile(username=username, email=email, notes="")
+                profile.save()
+                return makeResponse(name=query)
     except Exception as e:
         return makeErrorResponse(query, e.message)
 
