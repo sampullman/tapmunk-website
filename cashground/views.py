@@ -25,7 +25,7 @@ def signup_admin(request):
     try:
         pw = request.POST['password']
         if pw == 'gocashegg':
-            c = { "profiles":getPreSignupProfiles() }
+            c = { 'profiles':getPreSignupProfiles() }
             return crsf_render(request, 'signup_admin.html', c)
         return crsf_render(request, 'signup_admin_login.html')  
     except Exception as e:

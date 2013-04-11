@@ -24,7 +24,8 @@ class PreSignupProfile(models.Model):
         super(PreSignupProfile, self).save(*args, **kwargs)
         
     def getDict(self):
-        return {'username':self.username, 'email':self.email, 'notes':notes }
+        return {'username':self.username, 'email':self.email, 'notes':self.notes,
+                 'timestamp':str(self.timestamp) }
 
 class Advertiser(models.Model):
     timestamp = models.DateTimeField('date published')

@@ -239,10 +239,10 @@ def getUsersDict():
     return users
     
 def getPreSignupProfiles():
-    users = []
-    for user in PreSignupProfile.objects.all().order_by('timestamp'):
-        users.append(user.getDict())
-    return users
+    profiles = []
+    for profile in PreSignupProfile.objects.all().order_by('timestamp'):
+        profiles.append(profile.getDict())
+    return profiles
 
 def getConsumablesDict():
     consumables = []
