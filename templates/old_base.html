@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<head>
+  <link rel="stylesheet" href="https://dl.dropbox.com/s/6f92bolsqjqhku8/common_old.css" type='text/css' />
+  <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js'></script>
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <div id="content">
+    <div id="top_bar">
+      <table id="left_table" class="top_table">
+        <tr>
+  		  <td class="title">CashEgg</td>
+ 		  <td class="table_space"></td>
+		  {% block nav %}{% endblock %}
+        </tr>
+      </table>
+	  {% block topbar %}{% endblock %}
+    </div>
+	{% block content %}{% endblock %}
+  </div>
+</body>

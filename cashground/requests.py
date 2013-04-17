@@ -1,8 +1,10 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User,Group
+from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from views import *
+import re
 
 VIDEO_AD = 20
 WEB_AD = 21
@@ -13,6 +15,10 @@ FACEBOOK_LIKE = 25
 TWITTER_FOLLOW = 26
 GOOGLE_PLUS_ONE = 27
 SLIDESHOW = 28
+
+def crsf_render(request, url, c={}):
+    c.update(csrf(request))
+    return render_to_response(url, c)
 
 def getRequestName(request):
     raw = request.POST.keys()[0]
@@ -35,6 +41,40 @@ def general_request(request):
             sender = data['sender']
             send_mail('Site Contact', text, sender, ('casheggshared@gmail.com',), fail_silently=False)
             return makeResponse(name='contactEmail')
+        elif query == 'requestPreSignups':
+            profiles = getPresignupProfiles()
+            return makeResponse({'profiles': profiles}, name=query)
+        elif query == 'createPreSignup':
+            error = False
+            username = data['username']
+            email = data['email']
+            if len(username) < 3 or len(username) >= 20:
+                error = "Username must be more than 2 and less than 20 characters."
+            elif not re.match(r'[a-zA-Z0-9_-]+', username):
+                error = "Username can only contain: a-z A-Z 0-9 - _"
+            elif not re.match(r'.+@.+\..+', email):
+                error = "Please enter a valid email"
+                
+            if error:
+                return makeErrorResponse(query, error)
+            else:
+                profile = PreSignupProfile(username=username, email=email, notes="")
+                profile.save()
+                return makeResponse(name=query)
+        elif query == 'savePreSignup':
+            username = data['username']
+            notes = data['notes']
+            profile = PreSignupProfile.objects.get(username=username)
+            profile.notes = notes
+            profile.save()
+            return makeResponse(name=query)
+        elif query == 'deletePreSignup':
+            username = data['username']
+            PreSignupProfile.objects.get(username=username).delete()
+            return makeResponse(name=query)
+        elif query == 'requestProfilesTable':
+            c = { 'profiles':getPreSignupProfiles() }
+            return makeResponse(render_to_string('signup_admin_table.html', c))
     except Exception as e:
         return makeErrorResponse(query, e.message)
 
@@ -217,6 +257,12 @@ def getUsersDict():
     for user in UserProfile.objects.all():
         users.append(user.getDict())
     return users
+    
+def getPreSignupProfiles():
+    profiles = []
+    for profile in PreSignupProfile.objects.all().order_by('-timestamp'):
+        profiles.append(profile.getDict())
+    return profiles
 
 def getConsumablesDict():
     consumables = []

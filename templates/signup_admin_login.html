@@ -1,0 +1,25 @@
+{% extends "old_base.html" %}
+  
+{% block head %}
+  <script type='text/javascript' src='https://dl.dropbox.com/s/j3irk6n6ufinvig/signup.js'></script>
+  <link rel="stylesheet" href="https://dl.dropbox.com/s/t173otztrfgbele/signup.css" type='text/css' />
+  <title>CashEgg Signup Admin</title>
+{% endblock %}
+
+{% block content %}
+<div id="title">
+	<h1>Signup Admin</h1>
+</div>
+<div id="signup">
+  <form id="signup_admin_login_form" action="/signup/admin" method="post">
+    {% csrf_token %}
+	<input type="password" name="password" />
+  </form>
+</div>
+<br />
+<div id="signup_submit_holder">
+	<a href="#" class="button button-blue">
+      <span id="signup_admin_login">Submit</span>
+    </a>
+</div>
+{% endblock %}

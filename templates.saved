@@ -1,0 +1,193 @@
+  #login {
+      position: relative;
+      float: right;
+      width: 140px;
+  }
+
+  #login td {
+      text-align: center;
+  }
+
+  #login_submit {
+  	position: relative;
+  	top: 8px;
+  }
+
+  #login_submit span {
+      padding: 4px 14px;
+      font-size: 12px;
+  }
+
+  #login_menu {
+      display: none;
+      position:absolute;
+      right: 0;
+      top: 58px;
+      padding-top: 10px;
+      z-index: 9999;
+      height: 110px;
+      width: 140px;
+      background: #333333;
+      text-align: center;
+      -webkit-box-shadow: 0px 2px 4px 0px #000;
+      box-shadow: 0px 2px 4px 0px #000;
+  }
+
+  #login_form input {
+      margin: 6px;
+      width: 120px;
+  }
+  
+  #features {
+      display: none;
+      width: 60%;
+      margin: 0 auto;
+  }
+
+  #features h1 {
+      text-align: center;
+  }
+  
+
+  /* Overlay styles */
+  .overlay {
+      display: none;
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:9999;
+      color:#333333;
+      text-align: center;
+      height: 100%;
+  }
+
+  .overlay h2 {
+      padding-top: 10px;
+      margin-bottom: 5px;
+  }
+
+  .overlay_background {
+      position: absolute;
+      background-color:rgba(0, 0, 0, 0.6);
+      opacity:0.6;
+      filter:alpha(opacity=60); /* For IE8 and earlier */
+      height: 100%;
+      width: 100%;
+  }
+
+  .overlay_content {
+      position: relative;
+      z-index:10000;
+      width: 420px;
+      height: 275px;
+      margin: 0 auto;
+      margin-top: 200px;
+      background: #ffffff;
+      -webkit-border-radius: 12px;
+      border-radius: 12px;
+      -webkit-background-clip: padding-box; background-clip: padding-box;
+      -webkit-box-shadow: 0px 2px 4px 0px #000;
+      box-shadow: 1px 4px 8px 2px #000;
+  }
+
+  .overlay table .input_label {
+      text-align: right;
+      padding-right: 50px;
+  }
+
+  #register_error {
+  	display: none;
+  	position: relative;
+  	top: -6px;
+  	text-align: center;
+  	color: #F00;
+  	font-size: 14px;
+  	margin-bottom: 5px;
+  }
+
+  #register_submit span {
+      padding: 6px 18px;
+      font-size: 14px;
+  }
+  
+  
+  <div id="features">
+    <h1>Frequently Asked Questions</h1>
+
+  <h2>What is CashEgg?</h2>
+  <p> First, do you own a smartphone? Do you like cash? If you answered yes to both,
+  	 well, CashEgg is for you! Businesses are always dying to meet a quality person
+  	 like you, and we've partnered with the ones willing to pay you for a date!
+     It's absolutely spam and scam-free and simple to use.
+  	 Who couldn’t use  more cash in their day?</p>
+  <p>Get paid while:<br /></p>
+    <span style="text-align: left;">
+  <ul>
+	<li>Walking down the street <a href="https://www.youtube.com/watch?v=NisCkxU544c"> like a boss</a></li>
+	<li>Avoiding eye contact on late-night public transportation</li>
+	<li>Checking your phone that last time before finally going to sleep</li>
+	<li>Whenever you want, Wherever you want!</li>
+  </ul>
+    </span>
+  <h2>How does it work?</h2>
+  <p>It’s simple! Launch CashEgg to browse our wide range of promotions to see
+    what interests you. After seeing what each business has to offer, answer an 
+    easy comprehension question to verify you paid attention, then you'll get instantly
+    get paid yourself! Deposit direct to Pay-Pal or your bank, or you can purchase from 
+    our store and send gifts or cash to friends.</p>
+  <h2>Why should I use it?</h2>
+  <p>Advertisers spend billions of dollars fighting for your eyeballs every year, buying
+  	tons of mobile ads no one will watch or care about. What a waste.
+    <br/>
+    We want to create a brighter future for mobile advertising, one that
+    puts the power back into the hands of users. You choose what, where, and when you see,
+     and no one will force feed you an ad again.
+     <br/>
+     And when you do see a cool product or brand on our app, we hope you check them out
+     and take them up on their offers! 
+
+    </p>
+
+  <h2>Great, where do I sign?</h2>
+  <p>Woah there, we keep things simple at CashEgg so no checks or contracts to sign! But
+    if you mean you want to try our app, the best thing to do now is to <a id="faq_register" href="/#faq"> pre-register</a> your username, 
+    to make sure your favorite-username-ever-since-middle-school doesn't get taken first.</p>
+  <br /><br />
+  </div>
+  
+  <div id="login_menu">
+    <form id="login_form" action="/account/" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="name" value="login" />
+      <input id="login_username" placeholder="Username" type="text" name="username" value="" />
+      <input id="login_password" placeholder="Password" type="password" name="password" value="" />
+      <a id="login_submit" href="#" class="button button-blue">
+        <span>Login</span>
+      </a>
+    </form>
+  </div>
+  
+  <div class="overlay">
+    <div class="overlay_back"></div>
+    <div class="overlay_content">
+      <h2>User Registration</h2>
+      <form id="register_form" action="/account/" method="post">
+        <input type="hidden" name="group" value="User" />
+        <input type="hidden" name="name" value="register" />
+        {% csrf_token %}
+        <table id="register_table">
+          <tr><td class="input_label">Username: </td><td class="input"><input type="text" name="username" /></td></tr>
+          <tr><td class="input_label">Password: </td><td class="input"><input type="password" name="password" /></td></tr>
+          <tr><td class="input_label">Confirm: </td><td class="input"><input type="password" name="confirm" /></td></tr>
+          <tr><td class="input_label">Email: </td><td class="input"><input type="text" name="email" /></td></tr>
+        </table>
+		<div id="register_error">
+		</div>
+        <a id="register_submit" href="#" class="button button-blue">
+          <span>Register</span>
+        </a>
+      </form>
+    </div>
+  </div>

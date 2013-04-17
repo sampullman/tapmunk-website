@@ -11,15 +11,27 @@ AD_TYPES= [ [VIDEO_AD, "Video Ad"], [ANDROID_DOWNLOAD, "Android Download"], [IPH
             [MAKE_PURCHASE, "Make Purchase"], [FACEBOOK_LIKE, "Facebook Like"],
             [TWITTER_FOLLOW, "Twitter Follow"], [GOOGLE_PLUS_ONE, "Google Plus One"], [WEB_AD, "Web Ad"] [SLIDESHOW, "Slideshow"] ];
 
-def crsf_render(request, url, c={}):
-    c.update(csrf(request))
-    return render_to_response(url, c)
-
 def cashground(request):
-    return crsf_render(request, 'cashground.html');
+    return crsf_render(request, 'cashground.html')
+
+def signup(request):
+    return crsf_render(request, 'signup.html')
+    
+def signup_admin(request):
+    try:
+        pw = request.POST['password']
+        if pw == 'gocashegg':
+            c = { 'profiles':getPreSignupProfiles() }
+            return crsf_render(request, 'signup_admin.html', c)
+        return crsf_render(request, 'signup_admin_login.html')  
+    except Exception as e:
+        return crsf_render(request, 'signup_admin_login.html')
 
 def cashground_login(request):
-    return crsf_render(request, 'login.html');
+    return crsf_render(request, 'login.html')
+
+def admin_temp(request):
+    return admin_account(request, None)
 
 def admin_account(request, user):
     c = { "ads":getAdsDict('admin'), 'users':getUsersDict(), 'consumables':getConsumablesDict(), "ad_types":AD_TYPES }
