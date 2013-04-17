@@ -9,7 +9,7 @@ from requests import *
 #AD_TYPES = [VIDEO_AD, APP_DOWNLOAD, MAKE_PURCHASE, FACEBOOK_LIKE, TWITTER_FOLLOW, WEB_AD];
 AD_TYPES= [ [VIDEO_AD, "Video Ad"], [ANDROID_DOWNLOAD, "Android Download"], [IPHONE_DOWNLOAD, "iPhone Download"],
             [MAKE_PURCHASE, "Make Purchase"], [FACEBOOK_LIKE, "Facebook Like"],
-            [TWITTER_FOLLOW, "Twitter Follow"], [GOOGLE_PLUS_ONE, "Google Plus One"], [WEB_AD, "Web Ad"] ];
+            [TWITTER_FOLLOW, "Twitter Follow"], [GOOGLE_PLUS_ONE, "Google Plus One"], [WEB_AD, "Web Ad"] [SLIDESHOW, "Slideshow"] ];
 
 def crsf_render(request, url, c={}):
     c.update(csrf(request))

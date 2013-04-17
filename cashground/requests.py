@@ -12,6 +12,7 @@ MAKE_PURCHASE = 24
 FACEBOOK_LIKE = 25
 TWITTER_FOLLOW = 26
 GOOGLE_PLUS_ONE = 27
+SLIDESHOW = 28
 
 def getRequestName(request):
     raw = request.POST.keys()[0]
