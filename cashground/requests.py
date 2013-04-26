@@ -111,7 +111,7 @@ def ads_request(request):
                 userProf.save()
             except:
                 return makeErrorResponse(query, 'Could not update (invalid ad id or user).')
-            return makeResponse({ 'cash': userProf.cash 'value': ad.value }, name=query)
+            return makeResponse({ 'cash': userProf.cash, 'value': ad.value }, name=query)
     except Exception as e:
         return makeErrorResponse(query, e.message)
 
