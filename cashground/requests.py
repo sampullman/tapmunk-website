@@ -4,17 +4,8 @@ from django.contrib.auth.models import User,Group
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from views import *
+from constants import *
 import re
-
-VIDEO_AD = 20
-WEB_AD = 21
-ANDROID_DOWNLOAD = 22
-IPHONE_DOWNLOAD = 23
-MAKE_PURCHASE = 24
-FACEBOOK_LIKE = 25
-TWITTER_FOLLOW = 26
-GOOGLE_PLUS_ONE = 27
-SLIDESHOW = 28
 
 def crsf_render(request, url, c={}):
     c.update(csrf(request))
@@ -25,12 +16,12 @@ def getRequestName(request):
     data = json.loads(raw)
     return (data['name'], data)
 
-def makeResponse(data='', success=True, name=''):
-    return HttpResponse(json.dumps({'success':success, 'request_name':name,
+def makeResponse(data='', response=SUCCESS, name=''):
+    return HttpResponse(json.dumps({'response':success, 'request_name':name,
                                     'data': data}))
 
-def makeErrorResponse(query, error):
-    return makeResponse({ 'error': error }, False, query)
+def makeErrorResponse(query, error, response=INVALID_DATA):
+    return makeResponse({ 'error': error }, response, query)
 
 @csrf_exempt
 def general_request(request):
@@ -93,7 +84,7 @@ def ads_request(request):
                     icon=data['icon'], value=data['value'], data="", campaign=Campaign.objects.all()[0])
             ad.save()
             createQuiz(ad, quiz)
-            return makeResponse({ 'id':ad.id, 'timestamp':str(ad.timestamp) }, True, query)
+            return makeResponse({ 'id':ad.id, 'timestamp':str(ad.timestamp) }, name=query)
         elif query == 'updateAd':
             ad = Ad.objects.get(id=data['id'])
             if ad:
@@ -102,9 +93,9 @@ def ads_request(request):
                 ad.save()
                 deleteQuiz(ad)
                 createQuiz(ad, quiz)
-                return makeResponse('', True, query)
+                return makeResponse('', name=query)
             else:
-                return makeResponse({'error':'User not in database.'}, False, query)
+                return makeErrorResponse(query, 'User not in database.')
         elif query == 'deleteAd':
             adId = data['id'];
             Ad.objects.filter(id=adId).delete()
@@ -119,7 +110,7 @@ def ads_request(request):
                 userProf.cash += ad.value
                 userProf.save()
             except:
-                return makeResponse({'error':'Could not update (invalid ad id or user).'}, False, query)
+                return makeErrorResponse(query, 'Could not update (invalid ad id or user).')
             return makeResponse({ 'cash': userProf.cash }, name=query)
     except Exception as e:
         return makeErrorResponse(query, e.message)
@@ -136,7 +127,7 @@ def consumables_request(request):
             item_type = data['type']
             cons = Consumable(title=title, icon=icon, cost=cost, item_type=item_type)
             cons.save()
-            return makeResponse({'id':cons.id, 'timestamp':str(cons.timestamp) }, True, query)
+            return makeResponse({'id':cons.id, 'timestamp':str(cons.timestamp) }, name=query)
         elif query == 'requestConsumables':
             return makeResponse({'consumables':getConsumablesDict()}, name=query)
         elif query == 'requestProducts':
@@ -150,10 +141,10 @@ def consumables_request(request):
             consumable.cost = data['cost']
             consumable.icon = data['iconURI']
             consumable.save()
-            return makeResponse('', True, query)
+            return makeResponse('', name=query)
         elif query == 'deleteConsumable':
             consumable = Consumable.objects.get(id=data['id']).delete()
-            return makeResponse('', True, query)
+            return makeResponse('', name=query)
     except Exception as e:
         return makeErrorResponse(query, e.message)
 
@@ -174,9 +165,9 @@ def user_request(request):
                     prof = UserProfile.objects.get(user=user)
                     return makeResponse(data={ 'id': user.id, 'cash': prof.cash }, name=query)
                 else:
-                    return makeResponse({ 'error': 'User is inactive.' }, False, query)
+                    return makeErrorResponse(query, 'User is inactive.')
             else:
-                return makeResponse({ 'error': 'Invalid username or password.' }, False, query)
+                return makeErrorResponse(query, 'Invalid username or password.')
         elif query == 'requestUsers':
             users = getUsersDict()
             return makeResponse({'users': users }, name=query)            
@@ -184,7 +175,7 @@ def user_request(request):
             user = User.objects.get(id=data['id'])
             user.username = data['username']
             user.save()
-            return makeResponse('', True, query)
+            return makeResponse('', name=query)
         elif query == 'registerUser':
             username = data['username']
             password = data['password']
@@ -195,7 +186,7 @@ def user_request(request):
         elif query == 'deleteUser':
             id = data['id']
             User.objects.get(id=id).delete()
-            return makeResponse('', True, query)
+            return makeResponse('', name=query)
     except Exception as e:
         return makeErrorResponse(query, e.message)
 
