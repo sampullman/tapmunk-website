@@ -87,6 +87,17 @@ class AdQuizAnswer(models.Model):
     answer = models.CharField(max_length=20)
     question = models.ForeignKey(AdQuizQuestion)
 
+class AdQuizResult(models.Model):
+    timestamp = models.DateTimeField('date published')
+    question = models.ForeignKey(AdQuizQuestion)
+    answer = models.ForeignKey(AdQuizAnswer)
+    user = models.ForeignKey(User)
+    
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.timestamp = timezone.now()
+        super(AdQuizResult, self).save(*args, **kwargs)
+
 class ViewedAd(models.Model):
     user = models.ForeignKey(UserProfile)
     ad = models.ForeignKey(Ad)

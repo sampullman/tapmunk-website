@@ -109,8 +109,11 @@ def ads_request(request):
                 userProf = UserProfile.objects.get(user=user)
                 userProf.cash += ad.value
                 userProf.save()
-            except:
-                return makeErrorResponse(query, 'Could not update (invalid ad id or user).')
+                quizData = data['quiz']
+                if quizData and quizData != "":
+                    reportQuizResult(user, quizData)
+            except Exception as e:
+                return makeErrorResponse(query, 'Could record watched ad: '+e.message)
             return makeResponse({ 'cash': userProf.cash, 'value': ad.value }, name=query)
     except Exception as e:
         return makeErrorResponse(query, e.message)
@@ -190,6 +193,22 @@ def user_request(request):
     except Exception as e:
         return makeErrorResponse(query, e.message)
 
+def reportQuizResult(user, quizResultObj):
+    try:
+        quiz = AdQuiz.objects.get(id=quizResultObj['id'])
+        questions = quizResultObj['questions']
+        answers = quizResultObj['answers']
+        for question, answer in zip(questions, answers):
+            if question and answer and question != "" and answer != "":
+                questionObj = AdQuizQuestion.objects.get(quiz=quiz, question=question)
+                answerObj = AdQuizAnswer.objects.get(question=questionObj, answer=answer)
+                result = AdQuizResult(question=questionObj, answer=answerObj, user=user)
+                result.save()
+        return True
+    except Exception as e:
+        raise e
+        
+
 def getQuiz(ad):
     quizzes = AdQuiz.objects.filter(ad=ad)
     if len(quizzes) == 0:
@@ -206,7 +225,7 @@ def getQuiz(ad):
         for answer in answers.filter(correct=False):
             curAnswers.append(answer.answer)
         answerList.append(curAnswers)
-    return { "questions":questionList, "answers":answerList }
+    return { "id":quiz.id, "questions":questionList, "answers":answerList }
 
 def createQuiz(ad, quizInfo):
     quiz = AdQuiz(ad=ad)
