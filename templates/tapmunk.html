@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block head %}
+  <link rel="stylesheet" href="https://dl.dropbox.com/s/4k0hn0yomdct09q/main.css" type='text/css' />
+  <link rel="stylesheet" href="https://dl.dropbox.com/s/z3b8nffm25agxv2/jquery.toastmessage.css" type='text/css' />
+  <script type='text/javascript' src='https://dl.dropbox.com/s/i0e7od4tq8dhncx/main.js'></script>
+  <script type='text/javascript' src='https://dl.dropbox.com/s/2r8zr5hsvwvdzwl/jquery.toastmessage.js'></script>
+  <script type='text/javascript' src='https://dl.dropbox.com/u/80197158/static/jquery.inputhints.min.js'></script>
+  <title>CashEgg</title>
+{% endblock %}
+
+{% block precontent %}
+<div id="top"></div>
+<div id="divider"></div>
+<div id="bottom"></div>
+{% endblock %}
+{% block content %}
+    <div id="main" class="content_page">
+      <div class="logo"><img src="https://dl.dropbox.com/s/2z03f6jdwek41nn/cashegg_logo.png" alt="CashEgg Logo"></div>
+      <div id="coming_soon">
+		  CashEgg is coming very soon!
+      </div>
+	  <br />
+	  <div id="description">
+		  With your app, you can choose to watch ads and earn real cash. Sign up via Facebook or email and follow us on Twitter so you're the first to hear when it's time to earn!
+	  </div>
+	  <br />
+	  <div id="social_icons">
+          <img src="https://dl.dropbox.com/s/bwf9rr3eidj4r4d/facebook.png"
+               alt="Facebook" width="80" height="80" id="facebook">
+	      <img src="https://dl.dropbox.com/s/giw2v6v3navu83u/twitter.png"
+	           alt="Twitter" width="80" height="80" id="twitter">
+		  <img src="https://dl.dropbox.com/s/kj8lnse78f7lnsx/mailegg.png"
+			   alt="Email" width="80" height="80" id="signup_button"> 
+	  </div>
+      <div id="appstore_icons">
+        <img src="https://dl.dropbox.com/u/80197158/cg_static/images/app_store.png"
+             alt="iPhone" width="160" height="55" id="app_store">
+        <img src="https://dl.dropbox.com/u/80197158/cg_static/images/play_store.png"
+             alt="Android" width="160" height="55" id="play_store">
+      </div>
+    </div>
+    <div id="contact">
+      <h1>Contact CashEgg</h1>
+      <div id="contact_email">
+        <input class="input" type="text" placeholder="Email" />
+      </div>
+      <div id="contact_text">
+        <textarea class="input" rows="14" cols="70" placeholder="Send an email to CashEgg"></textarea>
+      </div>
+	  <div id="contact_result">
+	  </div>
+      <div id="contact_submit_holder">
+        <a href="#" class="button button-blue">
+          <span id="contact_submit">Submit</span>
+        </a>
+      </div>
+    </div>
+	<div id="signup" class="content_page">
+        <div class="logo"><img src="https://dl.dropbox.com/s/2z03f6jdwek41nn/cashegg_logo.png" alt="CashEgg Logo"></div>
+		<div id="title">
+			<h1>CashEgg Signup</h1>
+		</div>
+		<div id="signup">
+			<table>
+			  <tr><td class="td1">User Name:</td><td class="td2"><input id="username" type="text" name="username" /></td></tr>
+			  <tr><td class="td1">Email:</td><td class="td2"><input id="email" type="text" name="email" /></td></tr>
+		 	</table>
+		</div>
+		<div id="signup_submit_holder">
+			<a href="#" class="button button-blue">
+		      <span id="signup_submit">Submit</span>
+		    </a>
+		</div>
+	</div>
+  </div>
+{% endblock %}
