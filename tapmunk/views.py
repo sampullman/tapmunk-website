@@ -11,8 +11,8 @@ AD_TYPES= [ [VIDEO_AD, "Video Ad"], [ANDROID_DOWNLOAD, "Android Download"], [IPH
             [MAKE_PURCHASE, "Make Purchase"], [FACEBOOK_LIKE, "Facebook Like"],
             [TWITTER_FOLLOW, "Twitter Follow"], [GOOGLE_PLUS_ONE, "Google Plus One"], [WEB_AD, "Web Ad"], [SLIDESHOW, "Slideshow"] ];
 
-def cashground(request):
-    return crsf_render(request, 'cashground.html')
+def tapmunk(request):
+    return crsf_render(request, 'tapmunk.html')
 
 def signup(request):
     return crsf_render(request, 'signup.html')
@@ -20,14 +20,14 @@ def signup(request):
 def signup_admin(request):
     try:
         pw = request.POST['password']
-        if pw == 'gocashegg':
+        if pw == 'gocashground':
             c = { 'profiles':getPreSignupProfiles() }
             return crsf_render(request, 'signup_admin.html', c)
         return crsf_render(request, 'signup_admin_login.html')  
     except Exception as e:
         return crsf_render(request, 'signup_admin_login.html')
 
-def cashground_login(request):
+def tapmunk_login(request):
     return crsf_render(request, 'login.html')
 
 def admin_temp(request):

@@ -1,8 +1,8 @@
 from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns(
-    'cashground.views',
-    url(r'^$', 'cashground'),
+    'tapmunk.views',
+    url(r'^$', 'tapmunk'),
     url(r'^request/$', 'general_request'),
     url(r'^request/ads$', 'ads_request'),
     url(r'^request/user$', 'user_request'),

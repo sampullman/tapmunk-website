@@ -12,7 +12,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '/home/sampullm/cashground-website/site.db',  # Or path to database file if using sqlite3.
+        'NAME': '/home/sampullm/tapmunk-website/site.db',  # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -20,7 +20,7 @@ DATABASES = {
     }
 }
 
-AUTH_PROFILE_MODULE = 'cashground.UserProfile'
+AUTH_PROFILE_MODULE = 'tapmunk.UserProfile'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -58,7 +58,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/home/sampullm/cashground-website/static/'
+STATIC_ROOT = '/home/sampullm/tapmunk-website/static/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -108,7 +108,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/home/sampullm/cashground-website/templates'
+    '/home/sampullm/tapmunk-website/templates'
 )
 
 INSTALLED_APPS = (
@@ -122,7 +122,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'cashground',
+    'south'
+    'tapmunk',
 )
 
 # A sample logging configuration. The only tangible logging

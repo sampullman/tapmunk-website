@@ -2,4 +2,4 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 rm #DIR/*~
 echo $DIR/*.html
-rsync -vaz -e ssh $DIR/*.html sampullm@martha.asmallorange.com:~/cashground-website/templates/
+rsync -vaz -e ssh $DIR/*.html sampullm@martha.asmallorange.com:~/tapmunk-website/templates/
