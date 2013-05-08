@@ -6,11 +6,16 @@ import datetime
 class UserProfile(models.Model):
     ads_viewed = models.IntegerField()
     cash = models.IntegerField()
-    user = models.ForeignKey(User, unique=True)
+    user = models.ForeignKey(User)
+    email = models.CharField(max_length=80, unique=True)
+    age = models.IntegerField()
+    gender = models.CharField(max_length=10)
+    device_id = models.CharField(max_length=30)
 
     def getDict(self):
         return {'name':self.user.username, 'timestamp':str(self.user.date_joined),
-                'cash':self.cash, 'ads_viewed':self.ads_viewed, 'id':self.user.id}
+                'cash':self.cash, 'ads_viewed':self.ads_viewed, 'id':self.user.id,
+                'age':self.age, 'gender':self.gender, 'device_id':self.device_id }
                 
 class PreSignupProfile(models.Model):
     username = models.CharField(max_length=20, unique=True)
@@ -47,7 +52,9 @@ class Campaign(models.Model):
         super(Campaign, self).save(*args, **kwargs)
 
 class Ad(models.Model):
-    title = models.CharField(max_length=20)
+    company = models.CharField(max_length=20)
+    title = models.CharField(max_length=30)
+    blurb = models.CharField(max_length=60)
     timestamp = models.DateTimeField('date published')
     ad_type = models.IntegerField()
     icon = models.URLField()
@@ -63,12 +70,15 @@ class Ad(models.Model):
         super(Ad, self).save(*args, **kwargs)
 
     def getDict(self):
-        return { 'title':self.title, 'type':self.ad_type, 'uri':self.uri,
+        return { 'company':self.company, 'title':self.title, 'blurb':self.blurb,
+                 'type':self.ad_type, 'uri':self.uri,
                  'data':"", 'icon':self.icon, 'value':self.value,
                  'timestamp':str(self.timestamp), 'id':self.id, 'image':self.image} 
 
-    def update(self, title, ad_type, icon, value, uri, image):
+    def update(self, company, title, blurb, ad_type, icon, value, uri, image):
+        self.company = company
         self.title = title
+        self.blurb = blurb
         self.ad_type = ad_type
         self.icon = icon
         self.value = value

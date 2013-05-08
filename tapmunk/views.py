@@ -34,7 +34,7 @@ def admin_temp(request):
     return admin_account(request, None)
 
 def admin_account(request, user):
-    c = { "ads":getAdsDict('admin'), 'users':getUsersDict(), 'consumables':getConsumablesDict(), "ad_types":AD_TYPES }
+    c = {"ad_types":AD_TYPES }
     return crsf_render(request, 'admin.html', c)
 
 def user_account(request, user):

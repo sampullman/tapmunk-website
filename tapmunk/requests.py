@@ -86,16 +86,25 @@ def ads_request(request):
             createQuiz(ad, quiz)
             return makeResponse({ 'id':ad.id, 'timestamp':str(ad.timestamp) }, name=query)
         elif query == 'updateAd':
-            ad = Ad.objects.get(id=data['id'])
+            try:
+                ad = Ad.objects.get(id=data['id'])
+            except Exception as e:
+                ad = None
+            quiz = data['quiz']
             if ad:
-                quiz = data['quiz']
-                ad.update(data['title'], data['type'], data['icon'], data['value'], data['uri'], data['image'])
+                ad.update(data['company'], data['title'], data['blurb'], data['type'], data['icon'],
+                          data['value'], data['uri'], data['image'])
                 ad.save()
                 deleteQuiz(ad)
                 createQuiz(ad, quiz)
                 return makeResponse('', name=query)
             else:
-                return makeErrorResponse(query, 'User not in database.')
+                ad = Ad(company=data['company'], title=data['title'], blurb=data['blurb'],
+                        ad_type=data['type'], uri=data['uri'], image=data['image'],
+                        icon=data['icon'], value=data['value'], data="", campaign=Campaign.objects.all()[0])
+                ad.save()
+                createQuiz(ad, quiz)
+                return makeResponse({ 'id':ad.id, 'timestamp':str(ad.timestamp) }, name=query)
         elif query == 'deleteAd':
             adId = data['id'];
             Ad.objects.filter(id=adId).delete()
@@ -157,7 +166,7 @@ def user_request(request):
     try:
         query, data = getRequestName(request)
         if query == 'loginUser':
-            username = data['username']
+            username = getUsernameFromEmail(data['email'])
             password = data['password']
             service = data['service']
             user = authenticate(username=username, password=password)
@@ -180,12 +189,14 @@ def user_request(request):
             user.save()
             return makeResponse('', name=query)
         elif query == 'registerUser':
-            username = data['username']
             password = data['password']
             email = data['email']
             group = data['group']
-            registerUser(username, password, email, group)
-            return makeResponse({'id':user.id}, name=query)
+            age = data['age']
+            gender = data['gender'].lower()
+            deviceId = data['device_id']
+            user, prof = registerUser(email, password, deviceId, age, gender, group)
+            return makeResponse({ 'id': user.id, 'cash': prof.cash }, name=query)
         elif query == 'deleteUser':
             id = data['id']
             User.objects.get(id=id).delete()
@@ -256,7 +267,7 @@ def getServiceFilter(service):
 
 def getAdsDict(service):
     ads = []
-    for ad in Ad.objects.exclude(ad_type=getServiceFilter(service)):
+    for ad in Ad.objects.exclude(ad_type=getServiceFilter(service))[::-1]:
         dic = ad.getDict()
         dic['quiz'] = getQuiz(ad)
         ads.append(dic)
@@ -291,11 +302,15 @@ def getCouponsDict():
     for coupon in Consumable.objects.filter(item_type='Coupon'):
         coupons.append(coupon.getDict())
     return coupons
+    
+def getUsernameFromEmail(email):
+    return email[:30]
 
-def registerUser(username, password, email, group):
+def registerUser(email, password, deviceId, age, gender, group):
+    username = getUsernameFromEmail(email)
     user = User.objects.create_user(username, email, password)
     user.groups.add(Group.objects.get(name=group))
     user.save()
-    profile = UserProfile(ads_viewed=0, cash=0, user=user)
+    profile = UserProfile(ads_viewed=0, cash=0, email=email, age=age, gender=gender, user=user, device_id=deviceId)
     profile.save()
-    return user
+    return user, profile
