@@ -111,6 +111,14 @@ TEMPLATE_DIRS = (
     '/home/sampullm/tapmunk-website/templates'
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+  'django.contrib.auth.context_processors.auth',
+  'django.core.context_processors.i18n',
+  'django.core.context_processors.request',
+  'django.core.context_processors.media',
+  'django.core.context_processors.static',
+  'zinnia.context_processors.version',)
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -124,6 +132,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     #'south',
     'tapmunk',
+    'zinnia',
 )
 
 # A sample logging configuration. The only tangible logging
