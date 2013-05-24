@@ -3,13 +3,18 @@ from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import simplejson as json
 from django.http import HttpResponse
+from constants import *
 from models import *
-from requests import *
 
 #AD_TYPES = [VIDEO_AD, APP_DOWNLOAD, MAKE_PURCHASE, FACEBOOK_LIKE, TWITTER_FOLLOW, WEB_AD];
 AD_TYPES= [ [VIDEO_AD, "Video Ad"], [ANDROID_DOWNLOAD, "Android Download"], [IPHONE_DOWNLOAD, "iPhone Download"],
             [MAKE_PURCHASE, "Make Purchase"], [FACEBOOK_LIKE, "Facebook Like"],
             [TWITTER_FOLLOW, "Twitter Follow"], [GOOGLE_PLUS_ONE, "Google Plus One"], [WEB_AD, "Web Ad"], [SLIDESHOW, "Slideshow"] ];
+
+
+def crsf_render(request, url, c={}):
+    c.update(csrf(request))
+    return render_to_response(url, c)
 
 def tapmunk(request):
     return crsf_render(request, 'tapmunk.html')
