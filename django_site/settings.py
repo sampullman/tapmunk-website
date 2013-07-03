@@ -1,7 +1,11 @@
 # Django settings for django_site project.
+from os.path import dirname, join
+import os.path
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+
+SITE_DIR = os.path.abspath(os.path.dirname(__name__))
 
 ADMINS = (
     ('sam', 'sampullman@gmail.com'),
@@ -12,7 +16,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '/home/sampullm/tapmunk-website/site.db',  # Or path to database file if using sqlite3.
+        'NAME': join(SITE_DIR, 'site.db'),  # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -58,7 +62,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/home/sampullm/tapmunk-website/static/'
+STATIC_ROOT = join(SITE_DIR, 'static')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -108,7 +112,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/home/sampullm/tapmunk-website/templates'
+    join(SITE_DIR, 'templates')
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

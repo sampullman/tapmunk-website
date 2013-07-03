@@ -1,75 +1,22 @@
-{% extends "base.html" %}
-
-{% block head %}
-  <link rel="stylesheet" href="https://dl.dropbox.com/s/4k0hn0yomdct09q/main.css" type='text/css' />
-  <link rel="stylesheet" href="https://dl.dropbox.com/s/z3b8nffm25agxv2/jquery.toastmessage.css" type='text/css' />
-  <script type='text/javascript' src='https://dl.dropbox.com/s/i0e7od4tq8dhncx/main.js'></script>
-  <script type='text/javascript' src='https://dl.dropbox.com/s/2r8zr5hsvwvdzwl/jquery.toastmessage.js'></script>
-  <script type='text/javascript' src='https://dl.dropbox.com/u/80197158/static/jquery.inputhints.min.js'></script>
-  <title>Tapmunk</title>
-{% endblock %}
-
-{% block precontent %}
-<div id="top"></div>
-<div id="divider"></div>
-<div id="bottom"></div>
-{% endblock %}
-{% block content %}
-    <div id="main" class="content_page">
-      <div class="logo"><img src="https://dl.dropbox.com/s/wcjgj70ubaoyq4o/tapmunk_logo.png" alt="Tapmunk Logo"></div>
-      <div id="coming_soon">
-		  Tapmunk is coming very soon!
-      </div>
-	  <div id="description">
-		  Tapmunk enables you to earn real cash by watching ads. Check out our Facebook page and Follow us on Twitter so you can start earning as soon as our app comes out!
-	  </div>
-	  <div id="social_icons">
-          <img src="https://dl.dropbox.com/s/bwf9rr3eidj4r4d/facebook.png"
-               alt="Facebook" id="facebook">
-	      <img src="https://dl.dropbox.com/s/giw2v6v3navu83u/twitter.png"
-	           alt="Twitter" id="twitter">
-		  <!-- <img src="https://dl.dropbox.com/s/kj8lnse78f7lnsx/mailegg.png"
-			   alt="Email" width="80" height="80" id="signup_button"> -->
-	  </div>
-      <div id="appstore_icons">
-        <img src="https://dl.dropbox.com/u/80197158/cg_static/images/app_store.png"
-             alt="iPhone" width="160" height="55" id="app_store">
-        <img src="https://dl.dropbox.com/u/80197158/cg_static/images/play_store.png"
-             alt="Android" width="160" height="55" id="play_store">
-      </div>
+<!DOCTYPE html>
+<head>
+  <link rel="icon" 
+	    type="image/png" 
+	    href="https://dl.dropbox.com/s/t3oq4u2i6ns45fn/favicon.ico">
+  <link rel="stylesheet" href="static/css/main.css" type='text/css' />
+</head>
+<body>
+	<div id="top">
+		<span id="title">TapMunk</span>
+    	<a href="https://twitter.com/TapMunk" target="_blank" ><img src="https://dl.dropbox.com/s/giw2v6v3navu83u/twitter.png"
+         	alt="Twitter" id="twitter"></a>
+	 </div>
+    <div id="main">
+		<span id="main_text">
+			Under Construction
+		</span>
     </div>
-    <div id="contact">
-      <h1>Contact Tapmunk</h1>
-      <div id="contact_email">
-        <input class="input" type="text" placeholder="Email" />
-      </div>
-      <div id="contact_text">
-        <textarea class="input" rows="14" cols="70" placeholder="Send an email to Tapmunk"></textarea>
-      </div>
-	  <div id="contact_result">
-	  </div>
-      <div id="contact_submit_holder">
-        <a href="#" class="button button-blue">
-          <span id="contact_submit">Submit</span>
-        </a>
-      </div>
-    </div>
-	<div id="signup" class="content_page">
-        <div class="logo"><img src="https://dl.dropbox.com/s/2z03f6jdwek41nn/cashegg_logo.png" alt="Tapmunk Logo"></div>
-		<div id="title">
-			<h1>Tapmunk Signup</h1>
-		</div>
-		<div id="signup">
-			<table>
-			  <tr><td class="td1">User Name:</td><td class="td2"><input id="username" type="text" name="username" /></td></tr>
-			  <tr><td class="td1">Email:</td><td class="td2"><input id="email" type="text" name="email" /></td></tr>
-		 	</table>
-		</div>
-		<div id="signup_submit_holder">
-			<a href="#" class="button button-blue">
-		      <span id="signup_submit">Submit</span>
-		    </a>
-		</div>
+	<div id="bottom">
+		<span id="copyright">Tapmunk © 2013. All Rights Reserved.</span>
 	</div>
-  </div>
-{% endblock %}
+</body>

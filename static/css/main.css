@@ -1,0 +1,27 @@
+html, body {
+	height: 100%;
+	min-height: 100%;
+	margin: 0;
+}
+
+#top {
+	background: #999999;
+	height: 15%;
+}
+
+#twitter {
+	width: 40px;
+	height: 40px;
+	position: relative;
+	left: 90%;
+	
+}
+
+#main {
+	height: 65%;
+}
+
+#bottom {
+	height: 20%;
+	background: #7777AA;
+}
